@@ -158,11 +158,21 @@ export default function Navbar() {
               <li><NavLink to="/products" className="text-gray-600" onClick={() => setIsOpen(false)}>Products</NavLink></li>
               <li><NavLink to="/categories" className="text-gray-600" onClick={() => setIsOpen(false)}>Categories</NavLink></li>
               <li><NavLink to="/cart" className="text-gray-600" onClick={() => setIsOpen(false)}>Cart</NavLink></li>
-              <li><NavLink to="/Reg" className="text-gray-600" onClick={() => setIsOpen(false)}>Register</NavLink></li>
-              <li><NavLink  to="/login" className="text-gray-600" onClick={() => {setIsOpen(false) 
-                handleLogout
-              } }>Login</NavLink></li>
-              <li><span className="text-gray-600 cursor-pointer">Logout</span></li>
+              {
+                userToken ? 
+                <>
+                <li><span className="text-gray-600 cursor-pointer">Logout</span></li> 
+                <li><NavLink to="/UpdatePass" className="text-pink-300 hover:text-pink-400">Change Password</NavLink></li>
+                </>
+                :  
+                <>
+                <li><NavLink to="/Reg" className="text-gray-600" onClick={() => setIsOpen(false)}>Register</NavLink></li>
+                <li><NavLink  to="/login" className="text-gray-600" onClick={() => {setIsOpen(false) , handleLogout} }>Login</NavLink></li>
+                </>
+              }
+              
+              
+
               {/* <button className="bg-pink-400 text-white px-4 py-2 rounded-lg hover:bg-pink-500 transition">Get Started</button> */}
             </ul>
           </div>
