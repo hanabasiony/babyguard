@@ -11,11 +11,12 @@ import { authContext } from '../../context/AuthContext';
 
 export default function UpdateLoggedUserPassword() {
 
-    const { setuserToken } = useContext(authContext)
-
+    const {  userToken} = useContext(authContext)
+    const [ loading, setLoading] = useState(false)
     const [erorrMsg, setErorrMsg] = useState(null)
     const [succMsg, setSuccMsg] = useState(false)
     const [isClicked, setIsClicked] = useState(false)
+    
 
     const navigate = useNavigate()
 
@@ -30,17 +31,23 @@ export default function UpdateLoggedUserPassword() {
 
     }
 
-    const token = localStorage.getItem('tkn')
+    // const token = localStorage.getItem('tkn')
+    const token = userToken
 
     async function updatePass(values) {
+        setLoading(true)
         // console.log(values);
         setIsClicked(true)
-        const data = await axios.put('https://ecommerce.routemisr.com/api/v1/users/changeMyPassword', values , {
-            headers: {token}
-        })
+        const data = await axios.put('https://ecommerce.routemisr.com/api/v1/users/changeMyPassword', values, {
+            headers:  {
+                token: userToken,
+                "Content-Type": "application/json"
+            } ,
+        }  )
             .then(function (succ) {
 
                 console.log(succ);
+                setLoading(false)
                 // console.log(succ.data.token);
 
                 // setuserToken(succ.data.token)
@@ -61,7 +68,7 @@ export default function UpdateLoggedUserPassword() {
                 // err.response.data.message
                 setErorrMsg(err.response.data.message)
                 console.log(err);
-                
+                setLoading(false)
 
 
                 // setTimeout(() => {
@@ -99,15 +106,25 @@ export default function UpdateLoggedUserPassword() {
 
     })
     return (
-        <div className="wrapper py-7">
+        <div className="wrapper py-7 bg-pink-50">
 
 
 
 
 
-            <form className="max-w-md mx-auto pt-30 pb-15" onSubmit={regFormik.handleSubmit}>
+            <form className="max-w-md mx-auto pt-30 pb-15 px-10 " onSubmit={regFormik.handleSubmit}>
 
-                
+            {succMsg ?
+                <div className="p-4 mb-4 text-green-800 rounded-lg text-center bg-green-50 ">
+                   Changed Successfully!
+                </div>
+                : null}
+
+            {erorrMsg ?
+                <div className="p-4 mb-4 text-red-800 rounded-lg text-center bg-red-50 ">
+                    {erorrMsg}
+                </div>
+                : null}
 
                
                 <div className="relative z-0 w-full mb-5 group">
@@ -137,7 +154,7 @@ export default function UpdateLoggedUserPassword() {
 
 
               
-                    <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
+                    <button type="submit" className="text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">{loading ? 'Loading...' : 'Change'}</button>
                 
 
 

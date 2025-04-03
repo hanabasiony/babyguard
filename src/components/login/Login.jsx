@@ -13,6 +13,8 @@ import { authContext } from '../../context/AuthContext';
 
 export default function Login() {
 
+    const [loading, setLoading] = useState(false)
+
     const { setuserToken } = useContext(authContext)
 
 
@@ -34,10 +36,10 @@ export default function Login() {
 
 
     async function loginUser(values) {
-        // console.log(values);
+        setLoading(true)
         setIsClicked(true)
         const data = await axios.post('https://ecommerce.routemisr.com/api/v1/auth/signin', values).then(function (succ) {
-
+            setLoading(false)
             console.log(succ);
             // congratulations msg
             setSuccMsg(true)
@@ -50,6 +52,7 @@ export default function Login() {
             }, 2000)
 
             setIsClicked(false)
+            setLoading(false)
 
 
         }).catch(function (err) {
@@ -149,7 +152,14 @@ export default function Login() {
 
     })
     return (
-        <div className="wrapper py-7 pt-30 bg-pink-50  sm:px-16 md:px-0 ">
+        <div className="wrapper py-7 pt-30 bg-pink-50   ">
+
+            
+
+
+
+
+            <form className="max-w-md mx-auto px-8 " onSubmit={regFormik.handleSubmit} >
 
             {succMsg ?
                 <div className="p-4 mb-4 text-green-800 rounded-lg text-center bg-green-50 ">
@@ -162,11 +172,6 @@ export default function Login() {
                     {erorrMsg}
                 </div>
                 : null}
-
-
-
-
-            <form className="max-w-md mx-auto " onSubmit={regFormik.handleSubmit} >
 
                 {/* <div className="relative z-0 w-full mb-5 group">
                     <input value={regFormik.values.name} onChange={regFormik.handleChange} onBlur={regFormik.handleBlur} type="text" name="name" id="name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
@@ -210,23 +215,15 @@ export default function Login() {
                     </div> : ''}
                 </div> */}
 
+                <div className='flex justify-center items-center ' >
 
-                {isClicked ? <Circles
-                    height="40"
-                    width="40"
-                    color="#0000FF"
-                    ariaLabel="circles-loading"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                    visible={true}
-                /> :
-                    <button type="submit" className="text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">Login</button>
-
-                }
-
-                <Link to='/PassSend' className='text-sm'> Forget password? </Link>
+                    <button type="submit" className="text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">{loading ? 'Loading..' : 'Login'}</button>
 
 
+
+                    <Link to='/PassSend' className='text-sm text-center w-full '> Forgot password ? </Link>
+
+                </div>
             </form>
         </div>
 

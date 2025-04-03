@@ -5,15 +5,17 @@ import includes from './../../../node_modules/lodash-es/includes';
 import * as yup from 'yup';
 import { phone } from 'fontawesome';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate , Link} from 'react-router-dom';
 // import { FallingLines } from 'react-loader-spinner'
 import { Circles } from 'react-loader-spinner'
+// import { Link, useNavigate } from 'react-router-dom';
 
 
 export default function Reg() {
     const [erorrMsg, setErorrMsg] = useState(null)
     const [succMsg, setSuccMsg] = useState(false)
     const [isClicked, setIsClicked] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const navigate = useNavigate()
 
@@ -30,13 +32,14 @@ export default function Reg() {
 
     async function regestirUser(values) {
         // console.log(values);
+        setLoading(true)
         setIsClicked(true)
         axios.post('https://ecommerce.routemisr.com/api/v1/auth/signup', values)
             .then(function (succ) {
                 // console.log(data.data.data.message);
                 // console.log(data.data.data.token);
 
-
+                setLoading(false)
                 console.log(succ.data.message);
                 console.log(succ.data.token);
 
@@ -58,7 +61,7 @@ export default function Reg() {
                 setTimeout(() => {
                     setErorrMsg(null)
                 }, 2000)
-
+                setLoading(false)
                 setIsClicked(false)
 
             })
@@ -103,7 +106,14 @@ export default function Reg() {
 
     })
     return (
-        <div className="wrapper py-7">
+        <div className="wrapper py-7 bg-pink-50">
+
+            
+
+
+
+
+            <form className="max-w-md mx-auto px-8" onSubmit={regFormik.handleSubmit}>
 
             {succMsg ?
                 <div className="p-4 mb-4 text-green-800 rounded-lg text-center bg-gree-50 ">
@@ -116,11 +126,6 @@ export default function Reg() {
                     {erorrMsg}
                 </div>
                 : null}
-
-
-
-
-            <form className="max-w-md mx-auto" onSubmit={regFormik.handleSubmit}>
 
                 <div className="relative z-0 w-full mb-5 group">
                     <input value={regFormik.values.name} onChange={regFormik.handleChange} onBlur={regFormik.handleBlur} type="text" name="name" id="name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
@@ -163,7 +168,7 @@ export default function Reg() {
                 </div>
 
 
-                {isClicked ? <Circles
+                {/* {isClicked ? <Circles
                     height="40"
                     width="40"
                     color="#0000FF"
@@ -172,10 +177,18 @@ export default function Reg() {
                     wrapperClass=""
                     visible={true}
                 /> :
-                    <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
-                }
+                    <button type="submit" className="text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">Submit</button>
+                } */}
+
+                <div className='flex justify-center items-center ' >
+
+                    <button type="submit" className="text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">{loading ? 'Loading..' : 'Regester'}</button>
 
 
+
+                    <Link to='/login' className='text-sm text-center w-full '> Have account ? </Link>
+
+                </div>
 
 
             </form>

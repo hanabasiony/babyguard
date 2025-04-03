@@ -11,7 +11,8 @@ import { authContext } from '../../context/AuthContext';
 
 export default function PassReset() {
 
-    const { setuserToken } = useContext(authContext)
+    const { setuserToken ,token} = useContext(authContext)
+    const [ loading, setLoading] = useState(false)
 
     const [erorrMsg, setErorrMsg] = useState(null)
     const [succMsg, setSuccMsg] = useState(false)
@@ -32,22 +33,22 @@ export default function PassReset() {
 
     async function loginUser(values) {
         // console.log(values);
-        setIsClicked(true)
+        setLoading(true)
         const data = await axios.put('https://ecommerce.routemisr.com/api/v1/auth/resetPassword', values)
         .then(function (succ) {
-
+            setLoading(false)
             console.log(succ);
             // console.log(succ.data.token);
             
-            setuserToken(succ.data.token)
+            // setuserToken(succ.data.token)
 
             // localStorage.setItem('tkn', succ.data.token)
             // congratulations msg
-            // setSuccMsg(true)
+            setSuccMsg(true)
 
-            // setTimeout(() => {
-                // navigate('./login')
-            // }, 2000)
+            setTimeout(() => {
+                navigate('/login')
+            }, 2000)
 
             // setIsClicked(false)
 
@@ -56,13 +57,15 @@ export default function PassReset() {
             // console.log(err.response.data.message);
             // err.response.data.message
             // setErorrMsg(err.response.data.message)
-            
+            setLoading(false)
 
             setTimeout(() => {
-                // setErorrMsg(null)
+                setErorrMsg(null)
             }, 2000)
 
             // setIsClicked(false)
+            console.log(err);
+            
 
         })
 
@@ -90,16 +93,26 @@ export default function PassReset() {
 
     })
     return (
-        <div className="wrapper pt-50 pb-15">
+        <div className="wrapper pt-50 pb-15 bg-pink-50">
 
       
 
 
 
 
-            <form className="max-w-md mx-auto" onSubmit={regFormik.handleSubmit}>
+            <form className="max-w-md mx-auto px-8" onSubmit={regFormik.handleSubmit}>
 
-   
+            {succMsg ?
+                <div className="p-4 mb-4 text-green-800 rounded-lg text-center bg-green-50 ">
+                    Password changed successfully
+                </div>
+                : null}
+
+            {erorrMsg ?
+                <div className="p-4 mb-4 text-red-800 rounded-lg text-center bg-red-50 ">
+                    {erorrMsg}
+                </div>
+                : null}
 
 
                 <div className="relative z-0 w-full mb-5 group">
@@ -121,7 +134,7 @@ export default function PassReset() {
 
 
               
-                    <button type="submit" className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Reset</button>
+                    <button type="submit" className="text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">{loading ? 'Loading ...' : 'Change Password'}</button>
                 
 
 
