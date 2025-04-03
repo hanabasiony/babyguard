@@ -159,7 +159,9 @@ export default function Navbar() {
               <li><NavLink to="/categories" className="text-gray-600" onClick={() => setIsOpen(false)}>Categories</NavLink></li>
               <li><NavLink to="/cart" className="text-gray-600" onClick={() => setIsOpen(false)}>Cart</NavLink></li>
               <li><NavLink to="/Reg" className="text-gray-600" onClick={() => setIsOpen(false)}>Register</NavLink></li>
-              <li><NavLink to="/login" className="text-gray-600" onClick={() => setIsOpen(false)}>Login</NavLink></li>
+              <li><NavLink  to="/login" className="text-gray-600" onClick={() => {setIsOpen(false) 
+                handleLogout
+              } }>Login</NavLink></li>
               <li><span className="text-gray-600 cursor-pointer">Logout</span></li>
               {/* <button className="bg-pink-400 text-white px-4 py-2 rounded-lg hover:bg-pink-500 transition">Get Started</button> */}
             </ul>
