@@ -155,7 +155,7 @@ export default function Navbar() {
         {isOpen && (
           <div className="md:hidden bg-pink-100 py-4">
             <ul className="flex flex-col items-center space-y-4">
-              <li><NavLink to="/products" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Products</NavLink></li>
+              <li><NavLink to="/home" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Products</NavLink></li>
               <li><NavLink to="/categories" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Categories</NavLink></li>
               <li><NavLink to="/cart" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Cart</NavLink></li>
               {
