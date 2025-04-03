@@ -65,6 +65,7 @@ export default function Login() {
             }, 2000)
 
             setIsClicked(false)
+            setLoading(false)
 
         })
 
@@ -162,13 +163,13 @@ export default function Login() {
             <form className="max-w-md mx-auto px-8 " onSubmit={regFormik.handleSubmit} >
 
             {succMsg ?
-                <div className="p-4 mb-4 text-green-800 rounded-lg text-center bg-green-50 ">
+                <div className="p-4 mb-4 mt-10 text-green-800 rounded-lg text-center bg-green-50 ">
                     welcome back
                 </div>
                 : null}
 
             {erorrMsg ?
-                <div className="p-4 mb-4 text-red-800 rounded-lg text-center bg-red-50 ">
+                <div className="p-4 mb-4 mt-10 text-red-800 rounded-lg text-center bg-red-50 ">
                     {erorrMsg}
                 </div>
                 : null}
