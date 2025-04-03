@@ -149,10 +149,10 @@ export default function Login() {
 
     })
     return (
-        <div className="wrapper py-7 pt-30 bg-pink-50">
+        <div className="wrapper py-7 pt-30 bg-pink-50  sm:px-16 md:px-0 ">
 
             {succMsg ?
-                <div className="p-4 mb-4 text-green-800 rounded-lg text-center bg-gree-50 ">
+                <div className="p-4 mb-4 text-green-800 rounded-lg text-center bg-green-50 ">
                     welcome back
                 </div>
                 : null}
@@ -166,7 +166,7 @@ export default function Login() {
 
 
 
-            <form className="max-w-md mx-auto" onSubmit={regFormik.handleSubmit}>
+            <form className="max-w-md mx-auto " onSubmit={regFormik.handleSubmit} >
 
                 {/* <div className="relative z-0 w-full mb-5 group">
                     <input value={regFormik.values.name} onChange={regFormik.handleChange} onBlur={regFormik.handleBlur} type="text" name="name" id="name" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />

@@ -97,7 +97,7 @@ export default function Navbar() {
         </div>
       </nav> */}
 
-      <nav className="bg-pink-50 shadow shadow-pink-300 px-6 fixed mb-6">
+      <nav className="bg-pink-50 shadow shadow-pink-300 px-2 fixed mb-6">
         <div className="container mx-auto flex items-center justify-between">
           {/* Left Side: Logo & Links */}
           <div className="flex items-center">
@@ -155,19 +155,19 @@ export default function Navbar() {
         {isOpen && (
           <div className="md:hidden bg-pink-100 py-4">
             <ul className="flex flex-col items-center space-y-4">
-              <li><NavLink to="/products" className="text-gray-600" onClick={() => setIsOpen(false)}>Products</NavLink></li>
-              <li><NavLink to="/categories" className="text-gray-600" onClick={() => setIsOpen(false)}>Categories</NavLink></li>
-              <li><NavLink to="/cart" className="text-gray-600" onClick={() => setIsOpen(false)}>Cart</NavLink></li>
+              <li><NavLink to="/products" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Products</NavLink></li>
+              <li><NavLink to="/categories" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Categories</NavLink></li>
+              <li><NavLink to="/cart" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Cart</NavLink></li>
               {
                 userToken ? 
                 <>
-                <li><span className="text-gray-600 cursor-pointer">Logout</span></li> 
+                <li><span className="text-gray-600 cursor-pointer hover:text-pink-400 " onClick={handleLogout}>Logout</span></li> 
                 <li><NavLink to="/UpdatePass" className="text-pink-300 hover:text-pink-400">Change Password</NavLink></li>
                 </>
                 :  
                 <>
-                <li><NavLink to="/Reg" className="text-gray-600" onClick={() => setIsOpen(false)}>Register</NavLink></li>
-                <li><NavLink  to="/login" className="text-gray-600" onClick={() => {setIsOpen(false) , handleLogout} }>Login</NavLink></li>
+                <li><NavLink to="/Reg" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Register</NavLink></li>
+                <li><NavLink  to="/login" className="text-gray-600 hover:text-pink-400" onClick={() => {setIsOpen(false) } }>Login</NavLink></li>
                 </>
               }
               
