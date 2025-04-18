@@ -5,6 +5,8 @@ import LoaderScreen from '../loaderScreen/loaderScreen'
 import SimpleSlider from '../homeSlider/homeSlider'
 import CategoriesSlider from '../categoriesSlider/categoriesSlider'
 import { useQuery } from '@tanstack/react-query'
+import { useNavigate } from "react-router-dom";
+
 
 export default function Home() {
 
@@ -16,6 +18,11 @@ export default function Home() {
         queryKey: ['getAllProsucts'],
         queryFn: getAllProducts2
     })
+    const navigate = useNavigate()
+
+    function navigatePayment(){
+        navigate('/payment')
+    }
 
     console.log('data', data);
     console.log('isError', isError);
@@ -27,38 +34,39 @@ export default function Home() {
     if (isLoading) {
         return <LoaderScreen />
     }
-    if(isError){
+    if (isError) {
         return <div>{isError}</div>
     }
 
 
     return (
         <>
-            <SimpleSlider />
+            {/* <SimpleSlider />
 
-            <CategoriesSlider />
-            <div className='container mx-auto'>
+            <CategoriesSlider /> */}
+            <div className="wrapper py-40 bg-pink-50 px-10 mx-auto">
+                <div className='container mx-auto '>
 
-                <div className="grid md:grid-cols-3 lg:md:grid-cols-6 gap-2 md:gap-5 ">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 mx-auto justify-items-center">
 
-                    {data.data.data?.map(product => <div key={product._id} className="bg-blue-500 p-3">
-                        <img src={product.imageCover} alt={product.title} className='w-full' />
-                        <h3>{product.title.split(' ').slice(0, 2).join(' ')}</h3>
-                        <h2>{product.category.name}</h2>
-                        <div className='flex justify-between items-center'>
-                            <p>{product.ratingsAverage}</p>
-                            <div>
-                                {product.priceAfterDiscount ?
-                                    <>
-                                        <p className='line-through text-red-500'>{product.price}</p>
-                                        <p>{product.priceAfterDiscount}</p>
-                                    </> : <p>{product.price}</p>}
-                            </div>
-                        </div>
-                    </div>)}
+                        {data.data.data?.map(product => <div key={product._id} className="bg-white rounded-2xl shadow-md p-4 flex flex-col items-center text-center w-64">
+                            <img src={product.imageCover} alt={product.title} className=' w-24 h-24 mb-4' />
+                            <h3 className='text-lg font-semibold text-blue-600 mb-1'>{product.title.split(' ').slice(0, 2).join(' ')}</h3>
+                            {/* <h2>{product.category.name}</h2> */}
+                         
+                               
 
+                                <p className='text-blue-400 mb-3 font-semibold'>EGP {product.price}</p>
+
+                            
+                            <button class="bg-pink-400 hover:bg-pink-500 text-white font-medium py-2 px-4 rounded-full cursor-pointer" onClick={navigatePayment}>
+                                Add to Cart
+                            </button>
+                        </div>)}
 
 
+
+                    </div>
                 </div>
             </div>
         </>

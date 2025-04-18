@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 // import logo from '../../assets/images/freshcart-logo.svg'
-import logobaby from '../../assets/images/logo.png'
+import logobaby from '../../assets/images/logo-new2.png'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { FaBars, FaTimes } from "react-icons/fa";
 import './navbar.css'
@@ -97,13 +97,13 @@ export default function Navbar() {
         </div>
       </nav> */}
 
-      <nav className="bg-pink-50 shadow shadow-pink-300 px-2 fixed mb-6">
+      <nav className="bg-pink-50 shadow shadow-pink-300 px-2 fixed mb-6 py-2">
         <div className="container mx-auto flex items-center justify-between">
           {/* Left Side: Logo & Links */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <img src={logobaby} alt="fresh cart" className="w-20" />
-              <h1 className="text-pink-300 text-xl font-bold">Baby Guard</h1>
+              <img src={logobaby} alt="fresh cart" className="w-50" />
+              {/* <h1 className="text-pink-300 text-xl font-bold">Baby Guard</h1> */}
             </Link>
           </div>
 
@@ -115,13 +115,13 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li>
-              <NavLink to="/categories" className=" hover:text-pink-600   p-2  text-pink-400 font-semibold bg-white rounded-full shadow-[0_0_10px_rgba(255,182,193,0.6)] border border-pink-200">
+              <NavLink to="/vacciens" className=" hover:text-pink-600   p-2  text-pink-400 font-semibold bg-white rounded-full shadow-[0_0_10px_rgba(255,182,193,0.6)] border border-pink-200">
                 Vacciens
               </NavLink>
             </li>
             <li>
-              <NavLink to="/cart" className="text-gray-600 hover:text-pink-600   p-2  text-pink-400 font-semibold bg-white rounded-full shadow-[0_0_10px_rgba(255,182,193,0.6)] border border-pink-200">
-                Cart
+              <NavLink to="/" className=" hover:text-pink-600   p-2  text-pink-400 font-semibold bg-white rounded-full shadow-[0_0_10px_rgba(255,182,193,0.6)] border border-pink-200">
+                Pregnancy tips
               </NavLink>
             </li>
           </ul>
@@ -135,11 +135,19 @@ export default function Navbar() {
                 <>
                   <li><span onClick={handleLogout} className="text-pink-300 cursor-pointer hover:text-pink-400">Logout</span></li>
                   <li><NavLink to="/UpdatePass" className="text-pink-300 hover:text-pink-400">Change Password</NavLink></li>
+                  <div className="cart">
+                    
+                      < NavLink to="/cart">
+                <i class="fa-solid fa-cart-shopping text-xl text-pink-500"> </i>
+                      </NavLink>
+                   
+                  </div>
                 </>
                 :
                 <>
                   <li><NavLink to="/Reg" className="text-pink-300 hover:text-pink-400">Register</NavLink></li>
                   <li><NavLink to="/login" className="text-pink-300 hover:text-pink-400">Login</NavLink></li>
+
                 </>
               }
             </ul>
@@ -157,21 +165,25 @@ export default function Navbar() {
             <ul className="flex flex-col items-center space-y-4">
               <li><NavLink to="/home" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Products</NavLink></li>
               <li><NavLink to="/categories" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Categories</NavLink></li>
-              <li><NavLink to="/cart" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Cart</NavLink></li>
+              <li><NavLink to="/" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Pergnancy tips</NavLink></li>
+              <li><NavLink to="/" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Contant us</NavLink></li>
+              <li><NavLink to="/" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>About us</NavLink></li>
+
+              
               {
-                userToken ? 
-                <>
-                <li><span className="text-gray-600 cursor-pointer hover:text-pink-400 " onClick={handleLogout}>Logout</span></li> 
-                <li><NavLink to="/UpdatePass" className="text-pink-300 hover:text-pink-400">Change Password</NavLink></li>
-                </>
-                :  
-                <>
-                <li><NavLink to="/Reg" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Register</NavLink></li>
-                <li><NavLink  to="/login" className="text-gray-600 hover:text-pink-400" onClick={() => {setIsOpen(false) } }>Login</NavLink></li>
-                </>
+                userToken ?
+                  <>
+                    <li><span className="text-gray-600 cursor-pointer hover:text-pink-400 " onClick={handleLogout}>Logout</span></li>
+                    <li><NavLink to="/UpdatePass" className="text-pink-300 hover:text-pink-400">Change Password</NavLink></li>
+                  </>
+                  :
+                  <>
+                    <li><NavLink to="/Reg" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Register</NavLink></li>
+                    <li><NavLink to="/login" className="text-gray-600 hover:text-pink-400" onClick={() => { setIsOpen(false) }}>Login</NavLink></li>
+                  </>
               }
-              
-              
+
+
 
               {/* <button className="bg-pink-400 text-white px-4 py-2 rounded-lg hover:bg-pink-500 transition">Get Started</button> */}
             </ul>

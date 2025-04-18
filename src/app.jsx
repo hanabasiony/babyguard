@@ -24,6 +24,8 @@ import PassSend from './components/PassSend/PassSend'
 import VerifyResetCode from './components/verifyResetCode/verifyResetCode'
 import PassReset from './components/PassReset/PassReset'
 import UpdateLoggedUserPassword from './components/UpdateLoggedUserPassword/UpdateLoggedUserPassword'
+import Vacciens from './components/Vacciens/Vacciens'
+import PaymentPage from './components/PaymentPage/PaymentPage'
 
 const router = createBrowserRouter([
   {
@@ -42,6 +44,10 @@ const router = createBrowserRouter([
       { path: 'PassSend', element: <PassSend/> },
       { path: 'PassSend/VerifyResetCode', element: <VerifyResetCode/> },
       { path: 'PassSend/VerifyResetCode/PassReset', element: <PassReset/> },
+      {path: 'vacciens', element:<Vacciens/>},
+      {path: 'payment' , element:<ProtectedRoute>
+        <PaymentPage/>
+      </ProtectedRoute>}
 
       
 

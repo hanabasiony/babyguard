@@ -1,6 +1,6 @@
 import React from 'react'
 import { FaFacebookF, FaTwitter, FaInstagram, FaYoutube } from "react-icons/fa6"
-import logo from '../../assets/images/logo.png'
+import logo from '../../assets/images/logo-new2.png'
 export default function Fotter() {
   return (
     <>
@@ -10,8 +10,8 @@ export default function Fotter() {
           
           {/* Brand Info */}
           <div className="space-y-3">
-            <img src={logo} alt="Baby Care" className="w-24" />
-            <h2 className="text-pink-400 text-xl font-bold">Baby Guard</h2>
+            <img src={logo} alt="Baby Care" className="w-50" />
+            
             <p className="text-sm text-gray-500">Your trusted partner in baby care and parenting.</p>
           </div>
 

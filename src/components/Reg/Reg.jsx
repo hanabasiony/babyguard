@@ -106,7 +106,7 @@ export default function Reg() {
 
     })
     return (
-        <div className="wrapper py-7 bg-pink-50">
+        <div className="wrapper py-70  bg-pink-50">
 
             
 
@@ -116,13 +116,13 @@ export default function Reg() {
             <form className="max-w-md mx-auto px-8" onSubmit={regFormik.handleSubmit}>
 
             {succMsg ?
-                <div className="p-4 mb-4 text-green-800 rounded-lg text-center bg-gree-50 ">
+                <div className="absolute top-25 p-4 mb-4 mt-10   left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-green-800 rounded-lg text-center bg-green-50">
                     congratulations
                 </div>
                 : null}
 
             {erorrMsg ?
-                <div className="p-4 mb-4 text-red-800 rounded-lg text-center bg-red-50 ">
+                <div className="absolute top-25 p-4 mb-4 mt-10 text-red-800 rounded-lg text-center bg-red-50  left-1/2 transform -translate-x-1/2 -translate-y-1/2 ">
                     {erorrMsg}
                 </div>
                 : null}
@@ -182,7 +182,7 @@ export default function Reg() {
 
                 <div className='flex justify-center items-center ' >
 
-                    <button type="submit" className="text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">{loading ? 'Loading..' : 'Regester'}</button>
+                    <button type="submit" className="text-white bg-pink-400 hover:bg-pink-500 focus:ring-4 focus:outline-none focus:ring-pink-500 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-400 dark:hover:bg-pink-500 dark:focus:ring-pink-500">{loading ? 'Loading..' : 'Regester'}</button>
 
 
 

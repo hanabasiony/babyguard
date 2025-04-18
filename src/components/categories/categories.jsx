@@ -18,6 +18,8 @@ export default function Categories() {
     console.log(error);
     console.log(isLoading);
     console.log(isFetching);
+
+
     
     
   return (
@@ -35,5 +37,8 @@ export default function Categories() {
         </div>
         
     </div>
+
+
+
   )
 }
