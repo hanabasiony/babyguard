@@ -110,18 +110,33 @@ export default function Navbar() {
           {/* Desktop Nav Links */}
           <ul className="hidden md:flex items-center space-x-6">
             <li>
-              <NavLink to="/home" className=" hover:text-pink-600  p-2  text-pink-400 font-semibold bg-white rounded-full shadow-[0_0_10px_rgba(255,182,193,0.6)] border border-pink-200">
+              <NavLink to="/home" className=" hover:text-pink-600    text-pink-400 font-semibold ">
                 Products
               </NavLink>
             </li>
             <li>
-              <NavLink to="/vacciens" className=" hover:text-pink-600   p-2  text-pink-400 font-semibold bg-white rounded-full shadow-[0_0_10px_rgba(255,182,193,0.6)] border border-pink-200">
+              <NavLink to="/vacciens" className=" hover:text-pink-600    text-pink-400 font-semibold">
                 Vacciens
               </NavLink>
             </li>
             <li>
-              <NavLink to="/" className=" hover:text-pink-600   p-2  text-pink-400 font-semibold bg-white rounded-full shadow-[0_0_10px_rgba(255,182,193,0.6)] border border-pink-200">
+              <NavLink to="/pregnancyTips" className=" hover:text-pink-600     text-pink-400 font-semibold">
                 Pregnancy tips
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/childProfile" className=" hover:text-pink-600     text-pink-400 font-semibold">
+               Child profile
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/contactUs" className=" hover:text-pink-600     text-pink-400 font-semibold">
+               Contact us
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/aboutUs" className=" hover:text-pink-600     text-pink-400 font-semibold">
+               About us
               </NavLink>
             </li>
           </ul>
@@ -167,7 +182,10 @@ export default function Navbar() {
               <li><NavLink to="/categories" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Categories</NavLink></li>
               <li><NavLink to="/" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Pergnancy tips</NavLink></li>
               <li><NavLink to="/" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Contant us</NavLink></li>
-              <li><NavLink to="/" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>About us</NavLink></li>
+              <li><NavLink to="/aboutUs" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>About us</NavLink></li>
+              <li><NavLink to="/cart" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}> <i class="fa-solid fa-cart-shopping text-xl text-pink-500"> </i></NavLink></li>
+
+
 
               
               {
@@ -183,9 +201,6 @@ export default function Navbar() {
                   </>
               }
 
-
-
-              {/* <button className="bg-pink-400 text-white px-4 py-2 rounded-lg hover:bg-pink-500 transition">Get Started</button> */}
             </ul>
           </div>
         )}

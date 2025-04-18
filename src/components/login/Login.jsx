@@ -62,7 +62,7 @@ export default function Login() {
             yup.object().shape(
                 {
                     email: yup.string().email('invalid email'),
-                    password: yup.string().required('password is required').min(6).max(12),
+                    password: yup.string().required('password is required').min(6, 'minimum is 6').max(12,'maximum is 12'),
 
 
                 }

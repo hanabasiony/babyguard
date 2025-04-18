@@ -3,7 +3,7 @@ import img3 from "../../assets/images/img2payment.jpeg"
 
 export default function PaymentPage(){
     return (
-      <div className="min-h-screen bg-gray-50 flex justify-center items-center py-35 bg-pink-50">
+      <div className="min-h-screen  flex justify-center items-center py-35 bg-pink-50 ">
         <div className="w-full max-w-4xl bg-white rounded-3xl shadow-sm p-8">
        
   

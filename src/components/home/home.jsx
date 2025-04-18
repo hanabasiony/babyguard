@@ -5,13 +5,13 @@ import LoaderScreen from '../loaderScreen/loaderScreen'
 import SimpleSlider from '../homeSlider/homeSlider'
 import CategoriesSlider from '../categoriesSlider/categoriesSlider'
 import { useQuery } from '@tanstack/react-query'
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 export default function Home() {
 
     function getAllProducts2() {
-        return axios.get('https://ecommerce.routemisr.com/api/v1/products')
+        return axios.get('http://localhost:8000/api/products')
     }
 
     const { data, isError, error, isLoading, isFetching } = useQuery({
@@ -21,7 +21,7 @@ export default function Home() {
     const navigate = useNavigate()
 
     function navigatePayment(){
-        navigate('/payment')
+        navigate('/payment/')
     }
 
     console.log('data', data);
@@ -49,10 +49,10 @@ export default function Home() {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 mx-auto justify-items-center">
 
-                        {data.data.data?.map(product => <div key={product._id} className="bg-white rounded-2xl shadow-md p-4 flex flex-col items-center text-center w-64">
+                        {data.data.data?.map(product => <Link to={`/productDetails/${product._id}`} key={product._id} className="bg-white rounded-2xl shadow-md p-4 flex flex-col items-center text-center w-64">
                             <img src={product.imageCover} alt={product.title} className=' w-24 h-24 mb-4' />
-                            <h3 className='text-lg font-semibold text-blue-600 mb-1'>{product.title.split(' ').slice(0, 2).join(' ')}</h3>
-                            {/* <h2>{product.category.name}</h2> */}
+                            <h3 className='text-lg font-semibold text-blue-600 mb-1'>{product.name}</h3>
+                            <h2 className='text-blue-600'>{product.description}</h2>
                          
                                
 
@@ -62,7 +62,7 @@ export default function Home() {
                             <button class="bg-pink-400 hover:bg-pink-500 text-white font-medium py-2 px-4 rounded-full cursor-pointer" onClick={navigatePayment}>
                                 Add to Cart
                             </button>
-                        </div>)}
+                        </Link>)}
 
 
 

@@ -6,9 +6,7 @@ import * as yup from 'yup';
 import { phone } from 'fontawesome';
 import axios from 'axios';
 import { useNavigate , Link} from 'react-router-dom';
-// import { FallingLines } from 'react-loader-spinner'
 import { Circles } from 'react-loader-spinner'
-// import { Link, useNavigate } from 'react-router-dom';
 
 
 export default function Reg() {
@@ -16,10 +14,8 @@ export default function Reg() {
     const [succMsg, setSuccMsg] = useState(false)
     const [isClicked, setIsClicked] = useState(false)
     const [loading, setLoading] = useState(false)
-
+ 
     const navigate = useNavigate()
-
-
 
     let user = {
         name: '',
@@ -66,14 +62,6 @@ export default function Reg() {
 
             })
 
-
-
-
-
-
-
-
-
     }
 
     const regFormik = useFormik({
@@ -92,11 +80,11 @@ export default function Reg() {
         validationSchema:
             yup.object().shape(
                 {
-                    name: yup.string().required("name is required").min(3, "minimum must be 3 characters").max(12, "max must be 12 values"),
+                    name: yup.string().required("name is required").min(3, "minimum must be 3 characters").max(12, "maximum must be 12 values"),
                     phone: yup.string().required('phone number is req').matches(/^01[0125][0-9]{8}$/),
                     email: yup.string().email('invalid email'),
                     password: yup.string().required('password is required').min(6).max(12),
-                    rePassword: yup.string().required('password is required').oneOf([yup.ref('password'), 'pass dont match']),
+                    rePassword: yup.string().required('password is required').oneOf([yup.ref('password'), 'passwords dont match']),
 
 
                 }
@@ -167,24 +155,9 @@ export default function Reg() {
                     </div> : ''}
                 </div>
 
-
-                {/* {isClicked ? <Circles
-                    height="40"
-                    width="40"
-                    color="#0000FF"
-                    ariaLabel="circles-loading"
-                    wrapperStyle={{}}
-                    wrapperClass=""
-                    visible={true}
-                /> :
-                    <button type="submit" className="text-white bg-pink-700 hover:bg-pink-800 focus:ring-4 focus:outline-none focus:ring-pink-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-600 dark:hover:bg-pink-700 dark:focus:ring-pink-800">Submit</button>
-                } */}
-
                 <div className='flex justify-center items-center ' >
 
                     <button type="submit" className="text-white bg-pink-400 hover:bg-pink-500 focus:ring-4 focus:outline-none focus:ring-pink-500 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-400 dark:hover:bg-pink-500 dark:focus:ring-pink-500">{loading ? 'Loading..' : 'Regester'}</button>
-
-
 
                     <Link to='/login' className='text-sm text-center w-full '> Have account ? </Link>
 

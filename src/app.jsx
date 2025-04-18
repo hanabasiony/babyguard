@@ -26,6 +26,12 @@ import PassReset from './components/PassReset/PassReset'
 import UpdateLoggedUserPassword from './components/UpdateLoggedUserPassword/UpdateLoggedUserPassword'
 import Vacciens from './components/Vacciens/Vacciens'
 import PaymentPage from './components/PaymentPage/PaymentPage'
+import ChildProfile from './components/ChildProfile/ChildProfile'
+import PregnancyTips from './components/pregnancyTips/PregnancyTips'
+import ContactUs from './components/ContactUs/ContactUs'
+import ProductDetails from './components/ProductDetails/ProductDetails'
+import AboutUs from './components/AboutUs/AboutUs'
+
 
 const router = createBrowserRouter([
   {
@@ -47,7 +53,20 @@ const router = createBrowserRouter([
       {path: 'vacciens', element:<Vacciens/>},
       {path: 'payment' , element:<ProtectedRoute>
         <PaymentPage/>
-      </ProtectedRoute>}
+      </ProtectedRoute>},
+      {path: 'childProfile' , element:<ProtectedRoute>
+        <ChildProfile/>
+      </ProtectedRoute>},
+      { path: 'pregnancyTips', element: <PregnancyTips/> },
+
+      { path: 'contactUs', element: <ContactUs/> },
+      { path: 'productDetails/:id', element: <ProtectedRoute>
+       <ProductDetails/>
+      </ProtectedRoute> },
+      {path:'aboutUs' , element: <AboutUs/>},
+
+
+
 
       
 

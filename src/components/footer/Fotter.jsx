@@ -19,7 +19,7 @@ export default function Fotter() {
           <div>
             <h3 className="text-lg font-semibold text-pink-500">Quick Links</h3>
             <ul className="mt-3 space-y-2">
-              <li><a href="/products" className="hover:text-pink-400 transition">Products</a></li>
+              <li><a href="/home" className="hover:text-pink-400 transition">Products</a></li>
               <li><a href="/about" className="hover:text-pink-400 transition">About Us</a></li>
               <li><a href="/contact" className="hover:text-pink-400 transition">Contact</a></li>
               <li><a href="/faq" className="hover:text-pink-400 transition">FAQs</a></li>

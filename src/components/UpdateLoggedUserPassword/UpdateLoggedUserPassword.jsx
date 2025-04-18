@@ -92,7 +92,7 @@ export default function UpdateLoggedUserPassword() {
         validationSchema:
             yup.object().shape(
                 {
-                    currentPassword : yup.string().required('Please enter your current password').min(6,'min 6').max(12,'max 12'),
+                    currentPassword : yup.string().required('Please enter your current password').min(6,'minimum is 6').max(12,'maximum is 12'),
                     
                     password: yup.string().required('password is required').min(6).max(12),
 

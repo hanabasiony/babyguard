@@ -85,7 +85,7 @@ const [ loading, setLoading] = useState(false);
             yup.object().shape(
                 {
                     email: yup.string().email('invalid email'),
-                    // password: yup.string().required('password is required').min(6).max(12),
+              
 
 
                 }
