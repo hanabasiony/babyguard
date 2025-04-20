@@ -8,13 +8,13 @@ import { useQuery } from '@tanstack/react-query'
 
 export default function Vacciens() {
 
-    function getAllProducts2() {
+    function getAllVacciens() {
         return axios.get('https://ecommerce.routemisr.com/api/v1/products')
     }
 
     const { data, isError, error, isLoading, isFetching } = useQuery({
-        queryKey: ['getAllProsucts'],
-        queryFn: getAllProducts2
+        queryKey: ['getAllVacciens'],
+        queryFn: getAllVacciens
     })
 
     console.log('data', data);
@@ -37,15 +37,14 @@ export default function Vacciens() {
             {/* <SimpleSlider />
 
             <CategoriesSlider /> */}
-            <div className="wrapper py-40 bg-pink-50 px-25 mx-auto ">
+            <div className="wrapper py-40  px-25 mx-auto ">
                 <div className='container mx-auto '>
 
                     <div className="grid grid-cols-1  gap-4 md:gap-6 mx-auto justify-items-center">
 
                         {data.data.data?.map(product => <div key={product._id} className="bg-white rounded-2xl shadow-md p-4 flex flex-col  w-full py-15">
                             <img src={product.imageCover} alt={product.title} className=' w-34 h-34 mb-4' />
-                            <h3 className='text-lg font-bold text-black-600 mb-1'>{product.title.split(' ').slice(0, 2).join(' ')}</h3>
-                            {/* <h2>{product.category.name}</h2> */}
+                          
 
 
 

@@ -4,7 +4,7 @@ import '@fortawesome/react-fontawesome'
 
 import './app.css'
 import { createBrowserRouter } from 'react-router-dom'
-import { RouterProvider } from 'react-router-dom'
+import { RouterProvider , AdminRouterProvider } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import Login from './components/login/Login';
 import Notfound from './components/notfound/Notfound'
@@ -31,16 +31,20 @@ import PregnancyTips from './components/pregnancyTips/PregnancyTips'
 import ContactUs from './components/ContactUs/ContactUs'
 import ProductDetails from './components/ProductDetails/ProductDetails'
 import AboutUs from './components/AboutUs/AboutUs'
+// import CartContext from './context/CartContext'
+import CartContextProvider from './context/CartContext'
+import RealHome from './components/RealHome/RealHome'
 
 
 const router = createBrowserRouter([
   {
-    path: '', element: <Layout />, children: [
+    path: '', element: <>  <Layout /> </>, children: [
+      { path: '', element: <RealHome/> },
       { path: 'login', element: <Login /> },
       { path: 'UpdatePass', element: <UpdateLoggedUserPassword/> },
       { path: 'Reg', element: <Reg/> },
       { path: '*', element: <Notfound /> },{
-        path: 'home', element:
+        path: 'products', element:
           <ProtectedRoute>
             <Home />
           </ProtectedRoute>
@@ -74,6 +78,15 @@ const router = createBrowserRouter([
   }
 ])
 
+
+// const adminRouter =createBrowserRouter([
+//   {
+//     path: '', element: <>  <Layout /> </>, children: [
+//       { path: '', element: <AdminHome/> },
+//     ]
+//   }
+// ])
+
 const client = new QueryClient({
   defaultOptions:{
     // refetch
@@ -88,9 +101,13 @@ export function App() {
     <>
       <QueryClientProvider client={client}>
         <AuthcontextProvider>
+          <CartContextProvider>
 
           <RouterProvider router={router} />
+          {/* <AdminRouterProvider router={adminRouter} /> */}
+          
 
+          </CartContextProvider>
         </AuthcontextProvider>
       </QueryClientProvider>
     </>

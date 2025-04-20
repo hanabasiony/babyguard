@@ -110,7 +110,7 @@ export default function Navbar() {
           {/* Desktop Nav Links */}
           <ul className="hidden md:flex items-center space-x-6">
             <li>
-              <NavLink to="/home" className=" hover:text-pink-600    text-pink-400 font-semibold ">
+              <NavLink to="/products" className=" hover:text-pink-600    text-pink-400 font-semibold ">
                 Products
               </NavLink>
             </li>
@@ -178,7 +178,7 @@ export default function Navbar() {
         {isOpen && (
           <div className="md:hidden bg-pink-100 py-4">
             <ul className="flex flex-col items-center space-y-4">
-              <li><NavLink to="/home" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Products</NavLink></li>
+              <li><NavLink to="/products" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Products</NavLink></li>
               <li><NavLink to="/categories" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Categories</NavLink></li>
               <li><NavLink to="/" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Pergnancy tips</NavLink></li>
               <li><NavLink to="/" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Contant us</NavLink></li>

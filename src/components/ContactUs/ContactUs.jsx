@@ -15,9 +15,8 @@ export default function ContactUs() {
         };
 
         console.log('Form Data:', formData);
-
-        // Send to backend or handle it however you like
-        // axios.post('/api/contact', formData)
+        setMessage('')
+    
     };
 
     const options = ['Question', 'Suggestion', 'Complain'];
@@ -111,15 +110,14 @@ export default function ContactUs() {
                         <div>
                             <label className="block text-sm text-gray-700">Message</label>
                             <textarea
-                                rows="4"
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
-                                className="w-full mt-1 px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                rows="4" value={message} onChange={(e) => setMessage(e.target.value)} className="w-full mt-1 px-4 py-2 border rounded-md border-gray-300 focus:outline-none focus:ring-2 focus:ring-pink-500"
                             />
                         </div>
-
-                        <div className="max-w-md mx-auto">
+                        {/* old code for delection */}
+                        {/* <div className="max-w-md mx-auto">
                             <h2 className="text-lg font-semibold mb-4 text-gray-800">Select Type:</h2>
+
+
                             <div className="flex gap-4 flex-wrap">
                                 {options.map((option) => (
                                     <label key={option} className={` px-5 py-3  cursor-pointer  rounded-xl   border  font-medium  transition  duration-300 
@@ -139,11 +137,36 @@ export default function ContactUs() {
                                     </label>
                                 ))}
                             </div>
-                            {/* <p className="mt-4 text-gray-600">Selected: <strong>{selected}</strong></p> */}
+
+
+                            <p className="mt-4 text-gray-600">Selected: <strong>{selected}</strong></p>
+                        </div> */}
+
+                        <div className=" mx-auto mt-6">
+                            <label htmlFor="feedbackType" className="block text-sm font-medium text-gray-700 mb-2">
+                                Choose Feedback Type:
+                            </label>
+                            <select
+                                id="feedbackType"
+                                value={selected}
+                                onChange={(e) => setSelected(e.target.value)}
+                                className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-pink-500 focus:border-pink-500"
+                            >
+                                <option value="" disabled>Select one</option>
+                                <option value="question">Question</option>
+                                <option value="suggestion">Suggestion</option>
+                                <option value="complaint">Complaint</option>
+                            </select>
+
+                            {/* {selected && (
+                                <p className="mt-4 text-sm text-gray-600">
+                                    You selected: <strong>{selected}</strong>
+                                </p>
+                            )} */}
                         </div>
 
 
-                        <button type="submit" className="w-full bg-pink-400 text-white font-semibold py-2 rounded-md hover:bg-pink-500 transition" >Send Message</button>
+                        <button type="submit" onClick={handleSubmit} className="w-full bg-pink-400 text-white font-semibold py-2 rounded-md hover:bg-pink-500 transition" >Send Message</button>
                     </form>
                 </div>
 

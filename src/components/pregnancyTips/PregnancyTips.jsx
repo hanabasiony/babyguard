@@ -3,7 +3,7 @@ import { Info, Heart, Leaf, Smile } from "lucide-react";
 
 export default function PregnancyTips() {
     return (
-        <div className="bg-pink-50 py-30">
+        <div className="py-30">
             <div className="p-4  max-w-5xl mx-auto space-y-6 ">
                 {/* Header */}
                 <div className="bg-white p-6 rounded-2xl shadow flex items-center justify-between">

@@ -1,31 +1,63 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Star } from "lucide-react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import {  useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
+import LoaderScreen from "../loaderScreen/loaderScreen";
+import { CartContext } from "../../context/CartContext";
 
-const ProductDetalis = () => {
+export default function ProductDetalis() {
   const { id } = useParams()
+  // const { addProductToCart } = useContext(CartContext)
+  const {addProductsToCart} = useContext(CartContext)
 
+
+  // function handleAddToCart(){
+  //   addProductToCart(id)
+  // }
+
+  async function handleAddToCart(){
+   const res = await addProductsToCart(id)
+
+   if(res){
+    console.log('succes');
+    
+   }else{
+    console.log('error');
+    
+   }
+  }
 
 
   function getProductDetails() {
     return axios.get(`https://ecommerce.routemisr.com/api/v1/products/${id}`)
-     
+
 
   }
 
 
-  const { data , isError , isLoading} = useQuery({
+
+  const { data, isError, isLoading } = useQuery({
     queryKey: ["productDetails"],
     queryFn: getProductDetails,
   })
 
-  if (isError){
+
+
+  const ProductDetalisObject = data?.data.data
+  console.log(ProductDetalisObject);
+
+
+
+  if (isError) {
     return <div>product not found with this id</div>
   }
 
- 
+  if (isLoading) {
+    return <LoaderScreen />
+  }
+
+
   return (
     <div className="bg-whitea py-50">
       <div className="p-6 max-w-5xl mx-auto font-sans">
@@ -33,41 +65,37 @@ const ProductDetalis = () => {
           {/* Product Images */}
           <div className="space-y-4">
             <img
-              src="/images/onesie-main.png"
+              src={ProductDetalisObject?.imageCover}
               alt="Soft Cotton Onesie" a
-              className="rounded-xl w-full"
+              className="rounded-xl w-[50%]"
             />
             <div className="flex gap-2">
-             
-          <img src="/images/onesie-thumb2.png" alt="Thumb 2" className="w-20 rounded-md" />
-          <img src="/images/onesie-thumb3.png" alt="Thumb 3" className="w-20 rounded-md" /> 
+
+
 
             </div>
           </div>
 
           {/* Product Info */}
           <div>
-            <h1 className="text-2xl font-semibold">Soft Cotton Onesie</h1>
-            <p className="text-sm text-gray-600 mb-2">– Newborn (0–3 Months)</p>
-            <p className="text-xl font-bold mb-2">EGP 150</p>
+            <h1 className="text-2xl font-semibold">{ProductDetalisObject?.title}</h1>
+            <p className="text-sm text-gray-600 mb-2">{ProductDetalisObject?.subcategory.slug}</p>
+            <p className="text-xl font-bold mb-2">{ProductDetalisObject?.price}</p>
             <div className="flex items-center text-yellow-400 mb-4">
-              {Array(4)
-                .fill(0)
-                .map((_, i) => (
-                  <Star key={i} size={18} fill="currentColor" />
-                ))}
+              {Array.from({ length: ProductDetalisObject?.ratingsAverage || 0 }).map((_, i) => (
+                <Star key={i} size={18} fill="currentColor" />
+              ))}
               <span className="text-gray-500 ml-2">4.0</span>
             </div>
             <p className="text-gray-700 mb-4">
-              A breathable, 100% organic cotton onesie, perfect for delicate newborn skin. Soft,
-              stretchable, and easy to snap.
+              {ProductDetalisObject?.escription}
             </p>
 
             <div className="flex items-center space-x-3 mb-4">
               <button className="px-3 py-1 border rounded">-</button>
               <span>1</span>
               <button className="px-3 py-1 border rounded">+</button>
-              <button className="bg-pink-400 text-white px-4 py-2 rounded hover:bg-pink-500">
+              <button onClick={handleAddToCart} className="bg-pink-400 cursor-pointer text-white px-4 py-2 rounded hover:bg-pink-500">
                 Add to Cart
               </button>
             </div>
@@ -128,7 +156,7 @@ const ProductDetalis = () => {
                 <p className="font-semibold">EGP 70</p>
               </div>
               <div className="border rounded-xl p-4 text-center">
-              
+
                 <p>Footed Pajamas</p>
                 <p className="font-semibold">EGP 170</p>
               </div>
@@ -138,7 +166,8 @@ const ProductDetalis = () => {
       </div>
     </div>
 
+
   );
 };
 
-export default ProductDetalis;
+;
