@@ -4,7 +4,7 @@ import '@fortawesome/react-fontawesome'
 
 import './app.css'
 import { createBrowserRouter } from 'react-router-dom'
-import { RouterProvider , AdminRouterProvider } from 'react-router-dom'
+import { RouterProvider } from 'react-router-dom'
 import Layout from './components/layout/Layout'
 import Login from './components/login/Login';
 import Notfound from './components/notfound/Notfound'
@@ -34,6 +34,8 @@ import AboutUs from './components/AboutUs/AboutUs'
 // import CartContext from './context/CartContext'
 import CartContextProvider from './context/CartContext'
 import RealHome from './components/RealHome/RealHome'
+import { Toaster } from 'react-hot-toast'
+import Cart from './components/Cart/Cart'
 
 
 const router = createBrowserRouter([
@@ -68,6 +70,7 @@ const router = createBrowserRouter([
        <ProductDetails/>
       </ProtectedRoute> },
       {path:'aboutUs' , element: <AboutUs/>},
+      {path: 'cart' , element: <Cart/>}
 
 
 
@@ -105,11 +108,23 @@ export function App() {
 
           <RouterProvider router={router} />
           {/* <AdminRouterProvider router={adminRouter} /> */}
+          <Toaster 
+           toastOptions={{
+            className: '',
+            style: {
+              margin: '100px 0px 0px 0px ',
+              position: 'absloute',
+              zIndex: '999999',
+              color: '#713200',
+            },
+          }}
           
+          />
 
           </CartContextProvider>
         </AuthcontextProvider>
       </QueryClientProvider>
+      
     </>
   )
 }

@@ -4,22 +4,22 @@ export const authContext = createContext()
 
 export default function AuthcontextProvider({ children }) {
 
-    const [userToken, setuserToken] = useState(null)
+    // const [userToken, setuserToken] = useState(null)
 
    
 
-    useEffect(function(){
-        console.log("refreshed");
+    // useEffect(function(){
+    //     console.log("refreshed");
         
-        if( localStorage.getItem('tkn') != null){
-            setuserToken(localStorage.getItem('tkn'))
-        }
-    } , [])
+    //     if( localStorage.getItem('tkn') != null){
+    //         setuserToken(localStorage.getItem('tkn'))
+    //     }
+    // } , [])
      
     return (
         <>
             <authContext.Provider value={ {
-                userToken, setuserToken
+                // userToken, setuserToken
              } }>
                 {children}
 

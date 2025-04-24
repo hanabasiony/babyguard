@@ -9,13 +9,15 @@ import Reg from '../Reg/Reg'
 // import Btn from './btn';
 import { authContext } from '../../context/AuthContext';
 import Home from './../home/home';
+import { ShoppingCart } from 'lucide-react'
+import { CartContext } from '../../context/CartContext';
 
 
 
 
 export default function Navbar() {
   const { userToken, setuserToken } = useContext(authContext)
-
+   const { numOfCartItems } = useContext(CartContext)
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate()
   function handleLogout() {
@@ -97,7 +99,7 @@ export default function Navbar() {
         </div>
       </nav> */}
 
-      <nav className="bg-pink-50 shadow shadow-pink-300 px-2 fixed mb-6 py-2">
+      <nav className="bg-pink-50 shadow pe-7 shadow-pink-300 px-2 fixed mb-6 py-2">
         <div className="container mx-auto flex items-center justify-between">
           {/* Left Side: Logo & Links */}
           <div className="flex items-center">
@@ -126,17 +128,17 @@ export default function Navbar() {
             </li>
             <li>
               <NavLink to="/childProfile" className=" hover:text-pink-600     text-pink-400 font-semibold">
-               Child profile
+                Child profile
               </NavLink>
             </li>
             <li>
               <NavLink to="/contactUs" className=" hover:text-pink-600     text-pink-400 font-semibold">
-               Contact us
+                Contact us
               </NavLink>
             </li>
             <li>
               <NavLink to="/aboutUs" className=" hover:text-pink-600     text-pink-400 font-semibold">
-               About us
+                About us
               </NavLink>
             </li>
           </ul>
@@ -151,11 +153,18 @@ export default function Navbar() {
                   <li><span onClick={handleLogout} className="text-pink-300 cursor-pointer hover:text-pink-400">Logout</span></li>
                   <li><NavLink to="/UpdatePass" className="text-pink-300 hover:text-pink-400">Change Password</NavLink></li>
                   <div className="cart">
-                    
-                      < NavLink to="/cart">
-                <i class="fa-solid fa-cart-shopping text-xl text-pink-500"> </i>
-                      </NavLink>
-                   
+
+                    < NavLink to="/cart">
+                      <div className="relative inline-block">
+                        <ShoppingCart className="w-6 h-6 text-pink-700" />
+                       
+                          <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
+                            {numOfCartItems}
+                          </span>
+                        
+                      </div>
+                    </NavLink>
+
                   </div>
                 </>
                 :
@@ -187,7 +196,7 @@ export default function Navbar() {
 
 
 
-              
+
               {
                 userToken ?
                   <>

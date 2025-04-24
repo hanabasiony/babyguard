@@ -24,7 +24,7 @@ export default function Login() {
     async function loginUser(values) {
         setLoading(true)
         setIsClicked(true)
-        const data = await axios.post('https://ecommerce.routemisr.com/api/v1/auth/signin', values).then(function (succ) {
+        const data = await axios.post('http://localhost:8000/api/auth/login', values).then(function (succ) {
             setLoading(false)
             console.log(succ);
             // congratulations msg
@@ -41,9 +41,9 @@ export default function Login() {
             setLoading(false)
 
         }).catch(function (err) {
-            console.log(err.response.data.message);
+            console.log(err);
             // err.response.data.message
-            setErorrMsg(err.response.data.message)
+            // setErorrMsg(err.response.data.message)
 
             setTimeout(() => {
                 setErorrMsg(null)
@@ -53,6 +53,8 @@ export default function Login() {
             setLoading(false)
 
         })
+        // console.log(data);
+        
     }
 
     const regFormik = useFormik({

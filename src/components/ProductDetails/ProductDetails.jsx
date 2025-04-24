@@ -5,27 +5,61 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import LoaderScreen from "../loaderScreen/loaderScreen";
 import { CartContext } from "../../context/CartContext";
+import toast from "react-hot-toast";
 
 export default function ProductDetalis() {
+
+
+
+
+
   const { id } = useParams()
   // const { addProductToCart } = useContext(CartContext)
-  const {addProductsToCart} = useContext(CartContext)
+  const { addProductsToCart, updateCount, products, numOfCartItems } = useContext(CartContext)
 
+  // try
+  // const cartItem = products?.find(p => p.product._id === id);
 
-  // function handleAddToCart(){
-  //   addProductToCart(id)
+  // orifinal
+  // function handleChangeCount(id, newCount) {
+  //   updateCount(id, newCount)
   // }
 
-  async function handleAddToCart(){
-   const res = await addProductsToCart(id)
+  
+  // async function handleChangeCount() {
 
-   if(res){
-    console.log('succes');
-    
-   }else{
-    console.log('error');
-    
-   }
+  //   const res = await updateCount(id, newCount)
+
+  //   if (res) {
+  //     console.log('succes');
+  //     toast.success('success', { duration: 3000, position: "top-center" })
+
+  //   } else {
+  //     console.log('error');
+  //     toast.error('error', { duration: 3000, position: "top-center" })
+
+  //   }
+  // }
+
+
+  // function handleAddToCart() {
+  //   addProductsToCart(id)
+  // }
+
+  async function handleAddToCart() {
+    const res = await addProductsToCart(id)
+
+
+
+    if (res) {
+      console.log('succes');
+      toast.success('success', { duration: 3000, position: "top-center" })
+
+    } else {
+      console.log('error');
+      toast.error('error', { duration: 3000, position: "top-center" })
+
+    }
   }
 
 
@@ -92,9 +126,9 @@ export default function ProductDetalis() {
             </p>
 
             <div className="flex items-center space-x-3 mb-4">
-              <button className="px-3 py-1 border rounded">-</button>
-              <span>1</span>
-              <button className="px-3 py-1 border rounded">+</button>
+              <button className="px-3 py-1 border rounded cursor-pointer "  >-</button>
+              <span>{numOfCartItems}</span>
+              <button className="px-3 py-1 border rounded cursor-pointer"  >+</button>
               <button onClick={handleAddToCart} className="bg-pink-400 cursor-pointer text-white px-4 py-2 rounded hover:bg-pink-500">
                 Add to Cart
               </button>

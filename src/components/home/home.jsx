@@ -1,14 +1,19 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FallingLines } from 'react-loader-spinner'
 import LoaderScreen from '../loaderScreen/loaderScreen'
 import SimpleSlider from '../homeSlider/homeSlider'
 import CategoriesSlider from '../categoriesSlider/categoriesSlider'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useNavigate } from "react-router-dom";
+import { CartContext } from '../../context/CartContext'
+import toast from 'react-hot-toast'
 
 
 export default function Home() {
+
+    const { addProductsToCart } = useContext(CartContext)
+    const [loadingButtun, setLoadingButtun] = useState(false)
 
     function getAllProducts2() {
         // return axios.get('http://localhost:8000/api/products')
@@ -25,6 +30,19 @@ export default function Home() {
     //     navigate('/payment/')
     // }
 
+    function handleLoadingButton(){
+        
+    }
+
+    async function handleAddProduct(id) {
+        const res = await addProductsToCart(id)
+
+        if (res) {
+            toast.success('Product added successfully! ', { duration: 3000, position: 'top-center' })
+            setLoadingButtun(false)
+        }
+    }
+
     console.log('data', data);
     console.log('isError', isError);
     console.log('error', error);
@@ -40,6 +58,8 @@ export default function Home() {
     }
 
 
+
+
     return (
         <>
             {/* <SimpleSlider />
@@ -47,16 +67,20 @@ export default function Home() {
             <CategoriesSlider /> */}
             <div className="wrapper py-40 px-10 mx-auto">
                 <div className='container mx-auto '>
+                    
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 mx-auto justify-items-center">
 
                         {data.data.data?.map(product =>
-                            <Link to={`/productDetails/${product._id}`} key={product._id} className="bg-white rounded-2xl relative shadow-md p-4 flex flex-col items-center text-center w-64 group hover:scale-105 transition-all">
+                            <Link to={`/productDetails/${product._id}`}  key={product._id} className="bg-white pb-15  rounded-2xl relative shadow-md p-4 flex flex-col items-center text-center w-64 group hover:scale-105 transition-all">
                                 {/* <div className='absolute  top-5 left-3 w-10 h-10  shadow flex justify-center items-center rounded group-hover:left-4 transition-all '>
-                                    <button className='cursor-pointer flex justify-center items-center '><i class="fa-solid fa-cart-plus text-2xl text-green-400"></i></button>
-                                </div>
+                                    <button onClick={function (e) {
+                                    handleAddProduct(product._id)
+                                    e.preventDefault()
+                                } }className='cursor-pointer flex justify-center items-center '><i class="fa-solid fa-cart-plus text-2xl text-green-400"></i></button>
+                                </div> */}
 
-                                <div className='absolute  top-5 right-3 w-10 h-10  shadow flex justify-center items-center rounded group-hover:right-4 transition-all'>
+                                {/* <div className='absolute  top-5 right-3 w-10 h-10  shadow flex justify-center items-center rounded group-hover:right-4 transition-all'>
                                     <button className='cursor-pointer flex justify-center items-center '><i class="fa-solid fa-cart-arrow-down text-2xl text-red-400"></i></button>
                                 </div>  */}
 
@@ -64,12 +88,18 @@ export default function Home() {
                                 <h3 className='text-lg font-semibold text-blue-600 mb-1'>{product.name}</h3>
                                 <h2 className='text-blue-600'>{product.description}</h2>
 
-
+                                    
 
                                 <p className='text-blue-400 mb-3 font-semibold'>EGP {product.price}</p>
 
 
-                                <button class="bg-pink-400 hover:bg-pink-500 text-white font-medium py-2 px-4 rounded-full cursor-pointer" >
+                                <button onClick={function (e) {
+                                    handleAddProduct(product._id)
+                                    e.preventDefault()
+                                    setLoadingButtun(true)
+                                }
+                                } class="bg-pink-400 absolute bottom-3  hover:bg-pink-500 text-white font-medium py-2 px-4 rounded-full cursor-pointer" >
+                                    {/* {loadingButtun ? 'Loading...... ' : 'Add to Cart'} */}
                                     Add to Cart
                                 </button>
 
