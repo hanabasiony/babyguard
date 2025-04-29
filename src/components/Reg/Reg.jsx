@@ -30,7 +30,7 @@ export default function Reg() {
         nationalIdNumer:  '',
         birthDate: '',
         password: '',
-        passwordComfirm: '',
+        passwordConfirm: '',
         phoneNumber: '',
         governorate: '',
         city: '',
@@ -38,11 +38,13 @@ export default function Reg() {
         buildingNumber: '',
         apartmentNumber: '',
         gender: '',
+        
        
 
 
 
     }
+  
 
 
     async function regestirUser(values) {
@@ -53,7 +55,7 @@ export default function Reg() {
         setIsClicked(true)
         const data = await axios.post('http://localhost:8000/api/auth/signup', values)
             .then(function (succ) {
-               
+              
 
                 setLoading(false)
                 console.log(succ.data.message);
@@ -62,12 +64,12 @@ export default function Reg() {
                 // congratulations msg
                 setSuccMsg(true)
 
-                setuserToken(succ.data.token)
-                localStorage.setItem('tkn', succ.data.token)
+                // setuserToken(succ.data.token)
+                // localStorage.setItem('tkn', succ.data.token)
 
-                // setTimeout(() => {
-                //     navigate('/home')
-                // }, 5000)
+                setTimeout(() => {
+                    navigate('/login')
+                }, 5000)
 
                 setIsClicked(false)
 
@@ -87,10 +89,7 @@ export default function Reg() {
                     const errorData = err.response.data.errors;
                     const firstKey = Object.keys(errorData)[0];
                     setErorrMsg(errorData[firstKey].msg);
-                } else {
-                    setErorrMsg('Something went wrong. Please try again later.');
-                }
-
+                } 
             })
 
     }
@@ -110,9 +109,9 @@ export default function Reg() {
                     email: yup.string().email('invalid email'),
                     nationalIdNumer: yup.string().required('national id is req').min(14).max(14),
                     birthDate: yup.date().required("Birth date is required"),
-                    password: yup.string().required('password is required').min(6).max(16),
-                    passwordComfirm: yup.string().required('password is required').oneOf([yup.ref('password'), 'passwords dont match']),
-                    phoneNumber: yup.string().required('phone number is req'),
+                    password: yup.string().required('password is required').min(6),
+                    passwordConfirm: yup.string().required('password is required').oneOf([yup.ref('password'), 'passwords dont match']),
+                    phoneNumber: yup.string().required('phone number is req').matches(/^01[0-2,5]{1}[0-9]{8}$/, 'must be EGP number'),
                     governorate: yup.string().required("governorate is required"),
                     city: yup.string().required("city is required"),
                     street: yup.string().required("street is required"),
@@ -129,14 +128,14 @@ export default function Reg() {
 
     })
     return (
-        <div className="wrapper py-70  bg-pink-50">
+        <div className="wrapper py-45  bg-pink-50">
 
 
 
             <form className="max-w-md mx-auto px-8" onSubmit={regFormik.handleSubmit}>
 
                 {succMsg ?
-                    <div className="absolute top-25 p-4 mb-4 mt-10   left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-green-800 rounded-lg text-center bg-green-50">
+                    <div className="absolute top-25 p-4 mb-10 mt-10   left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-green-800 rounded-lg text-center bg-green-50">
                         congratulations
                     </div>
                     : null}
@@ -212,10 +211,10 @@ export default function Reg() {
 
 
                 <div className="relative z-0 w-full mb-5 group">
-                    <input value={regFormik.values.passwordComfirm} onBlur={regFormik.handleBlur} onChange={regFormik.handleChange} type="text" name="passwordComfirm" id="passwordComfirm" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    <label htmlFor="passwordComfirm" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirm password</label>
-                    {regFormik.errors.passwordComfirm && regFormik.touched.passwordComfirm ? <div class="p-4  mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                        {regFormik.errors.passwordComfirm}
+                    <input value={regFormik.values.passwordConfirm} onBlur={regFormik.handleBlur} onChange={regFormik.handleChange} type="text" name="passwordConfirm" id="passwordConfirm" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                    <label htmlFor="passwordConfirm" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Confirm password</label>
+                    {regFormik.errors.passwordConfirm && regFormik.touched.passwordConfirm ? <div class="p-4  mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        {regFormik.errors.passwordConfirm}
                     </div> : ''}
                 </div>
 

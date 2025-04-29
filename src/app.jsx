@@ -18,7 +18,7 @@ import AuthcontextProvider from './context/AuthContext'
 
 // import Test from './components/test/test'
 
-import ProtectedRoute from './components/test/test'
+import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import PassSend from './components/PassSend/PassSend'
 import VerifyResetCode from './components/verifyResetCode/verifyResetCode'
@@ -36,50 +36,71 @@ import CartContextProvider from './context/CartContext'
 import RealHome from './components/RealHome/RealHome'
 import { Toaster } from 'react-hot-toast'
 import Cart from './components/Cart/Cart'
+import AdminPannel from './components/adminPanel/adminPannel'
+import ProtectedRouteAdmin from './context/ProtectdRouteAdmin'
+
 
 
 const router = createBrowserRouter([
   {
-    path: '', element: <>  <Layout /> </>, children: [
-      { path: '', element: <RealHome/> },
+    path: '',
+    element: <Layout />,
+    children: [
+      { path: '', element: <RealHome /> },
       { path: 'login', element: <Login /> },
-      { path: 'UpdatePass', element: <UpdateLoggedUserPassword/> },
-      { path: 'Reg', element: <Reg/> },
-      { path: '*', element: <Notfound /> },{
-        path: 'products', element:
+      { path: 'UpdatePass', element: <UpdateLoggedUserPassword /> },
+      { path: 'Reg', element: <Reg /> },
+      { path: '*', element: <Notfound /> },
+      {
+        path: 'products',
+        element: (
           <ProtectedRoute>
             <Home />
           </ProtectedRoute>
+        ),
       },
-      { path: 'categories', element: <Categories/> },
-      { path: 'brands', element: <Brands/> },
-      { path: 'PassSend', element: <PassSend/> },
-      { path: 'PassSend/VerifyResetCode', element: <VerifyResetCode/> },
-      { path: 'PassSend/VerifyResetCode/PassReset', element: <PassReset/> },
-      {path: 'vacciens', element:<Vacciens/>},
-      {path: 'payment' , element:<ProtectedRoute>
-        <PaymentPage/>
-      </ProtectedRoute>},
-      {path: 'childProfile' , element:<ProtectedRoute>
-        <ChildProfile/>
-      </ProtectedRoute>},
-      { path: 'pregnancyTips', element: <PregnancyTips/> },
-
-      { path: 'contactUs', element: <ContactUs/> },
-      { path: 'productDetails/:id', element: <ProtectedRoute>
-       <ProductDetails/>
-      </ProtectedRoute> },
-      {path:'aboutUs' , element: <AboutUs/>},
-      {path: 'cart' , element: <Cart/>}
-
-
-
-
-      
-
-    ]
-  }
-])
+      { path: 'categories', element: <Categories /> },
+      { path: 'brands', element: <Brands /> },
+      { path: 'PassSend', element: <PassSend /> },
+      { path: 'PassSend/VerifyResetCode', element: <VerifyResetCode /> },
+      { path: 'PassSend/VerifyResetCode/PassReset', element: <PassReset /> },
+      { path: 'vacciens', element: <Vacciens /> },
+      {
+        path: 'payment',
+        element: (
+          <ProtectedRoute>
+            <PaymentPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'childProfile',
+        element: (
+          <ProtectedRoute>
+            <ChildProfile />
+          </ProtectedRoute>
+        ),
+      },
+      { path: 'pregnancyTips', element: <PregnancyTips /> },
+      { path: 'contactUs', element: <ContactUs /> },
+      {
+        path: 'productDetails/:id',
+        element: (
+          <ProtectedRoute>
+            <ProductDetails />
+          </ProtectedRoute>
+        ),
+      },
+      { path: 'aboutUs', element: <AboutUs /> },
+      { path: 'cart', element: <Cart /> },
+    ],
+  },
+  {
+    path: 'adminPannel', element: <ProtectedRouteAdmin>
+      <AdminPannel />
+    </ProtectedRouteAdmin>,
+  },
+]);
 
 
 // const adminRouter =createBrowserRouter([

@@ -8,28 +8,28 @@ import { useQuery } from '@tanstack/react-query'
 
 export default function Vacciens() {
 
-    function getAllVacciens() {
-        return axios.get('https://ecommerce.routemisr.com/api/v1/products')
-    }
+    // function getAllVacciens() {
+    //     return axios.get('https://ecommerce.routemisr.com/api/v1/products')
+    // }
 
-    const { data, isError, error, isLoading, isFetching } = useQuery({
-        queryKey: ['getAllVacciens'],
-        queryFn: getAllVacciens
-    })
+    // const { data, isError, error, isLoading, isFetching } = useQuery({
+    //     queryKey: ['getAllVacciens'],
+    //     queryFn: getAllVacciens
+    // })
 
-    console.log('data', data);
-    console.log('isError', isError);
-    console.log('error', error);
-    console.log('isLoading', isLoading);
-    console.log('isFetching', isFetching);
+    // console.log('data', data);
+    // console.log('isError', isError);
+    // console.log('error', error);
+    // console.log('isLoading', isLoading);
+    // console.log('isFetching', isFetching);
 
 
-    if (isLoading) {
-        return <LoaderScreen />
-    }
-    if (isError) {
-        return <div>{isError}</div>
-    }
+    // if (isLoading) {
+    //     return <LoaderScreen />
+    // }
+    // if (isError) {
+    //     return <div>{isError}</div>
+    // }
 
 
     return (
@@ -42,13 +42,13 @@ export default function Vacciens() {
 
                     <div className="grid grid-cols-1  gap-4 md:gap-6 mx-auto justify-items-center">
 
-                        {data.data.data?.map(product => <div key={product._id} className="bg-white rounded-2xl shadow-md p-4 flex flex-col  w-full py-15">
-                            <img src={product.imageCover} alt={product.title} className=' w-34 h-34 mb-4' />
+                       <div  className="bg-white rounded-2xl shadow-md p-4 flex flex-col  w-full py-15">
+                            <img src='' alt='img title' className=' w-34 h-34 mb-4' />
                           
 
 
 
-                            <p className='text-black-400 mb-3 font-semibold'>EGP {product.price}</p>
+                            <p className='text-black-400 mb-3 font-semibold'>EGP </p>
                            <div className="flex gap-1">
                             <i class="fa-solid fa-star text-amber-300">  </i>
                             <i class="fa-solid fa-star text-amber-300">  </i>
@@ -63,7 +63,7 @@ export default function Vacciens() {
                                     Book now
                                 </button>
                             </div>
-                        </div>)}
+                        </div>
 
 
 

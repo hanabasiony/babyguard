@@ -6,6 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import LoaderScreen from "../loaderScreen/loaderScreen";
 import { CartContext } from "../../context/CartContext";
 import toast from "react-hot-toast";
+import Categories from './../categories/categories';
 
 export default function ProductDetalis() {
 
@@ -14,8 +15,8 @@ export default function ProductDetalis() {
 
 
   const { id } = useParams()
-  // const { addProductToCart } = useContext(CartContext)
-  const { addProductsToCart, updateCount, products, numOfCartItems } = useContext(CartContext)
+  // // const { addProductToCart } = useContext(CartContext)
+  // const { addProductsToCart, updateCount, products, numOfCartItems } = useContext(CartContext)
 
   // try
   // const cartItem = products?.find(p => p.product._id === id);
@@ -46,50 +47,50 @@ export default function ProductDetalis() {
   //   addProductsToCart(id)
   // }
 
-  async function handleAddToCart() {
-    const res = await addProductsToCart(id)
+  // async function handleAddToCart() {
+  //   const res = await addProductsToCart(id)
 
 
 
-    if (res) {
-      console.log('succes');
-      toast.success('success', { duration: 3000, position: "top-center" })
+  //   if (res) {
+  //     console.log('succes');
+  //     toast.success('success', { duration: 3000, position: "top-center" })
 
-    } else {
-      console.log('error');
-      toast.error('error', { duration: 3000, position: "top-center" })
+  //   } else {
+  //     console.log('error');
+  //     toast.error('error', { duration: 3000, position: "top-center" })
 
-    }
-  }
-
-
-  function getProductDetails() {
-    return axios.get(`https://ecommerce.routemisr.com/api/v1/products/${id}`)
+  //   }
+  // }
 
 
-  }
+  // function getProductDetails() {
+  //   return axios.get(`https://ecommerce.routemisr.com/api/v1/products/${id}`)
 
 
-
-  const { data, isError, isLoading } = useQuery({
-    queryKey: ["productDetails"],
-    queryFn: getProductDetails,
-  })
+  // }
 
 
 
-  const ProductDetalisObject = data?.data.data
-  console.log(ProductDetalisObject);
+  // const { data, isError, isLoading } = useQuery({
+  //   queryKey: ["productDetails"],
+  //   queryFn: getProductDetails,
+  // })
 
 
 
-  if (isError) {
-    return <div>product not found with this id</div>
-  }
+  // const ProductDetalisObject = data?.data.data
+  // console.log(ProductDetalisObject);
 
-  if (isLoading) {
-    return <LoaderScreen />
-  }
+
+
+  // if (isError) {
+  //   return <div>product not found with this id</div>
+  // }
+
+  // if (isLoading) {
+  //   return <LoaderScreen />
+  // }
 
 
   return (
@@ -99,8 +100,8 @@ export default function ProductDetalis() {
           {/* Product Images */}
           <div className="space-y-4">
             <img
-              src={ProductDetalisObject?.imageCover}
-              alt="Soft Cotton Onesie" a
+              src=''
+              alt="Soft Cotton Onesie" 
               className="rounded-xl w-[50%]"
             />
             <div className="flex gap-2">
@@ -112,24 +113,24 @@ export default function ProductDetalis() {
 
           {/* Product Info */}
           <div>
-            <h1 className="text-2xl font-semibold">{ProductDetalisObject?.title}</h1>
-            <p className="text-sm text-gray-600 mb-2">{ProductDetalisObject?.subcategory.slug}</p>
-            <p className="text-xl font-bold mb-2">{ProductDetalisObject?.price}</p>
+            <h1 className="text-2xl font-semibold">title</h1>
+            <p className="text-sm text-gray-600 mb-2">Categories</p>
+            <p className="text-xl font-bold mb-2">price</p>
             <div className="flex items-center text-yellow-400 mb-4">
-              {Array.from({ length: ProductDetalisObject?.ratingsAverage || 0 }).map((_, i) => (
+              {/* {Array.from({ length: ProductDetalisObject?.ratingsAverage || 0 }).map((_, i) => (
                 <Star key={i} size={18} fill="currentColor" />
-              ))}
+              ))} */}
               <span className="text-gray-500 ml-2">4.0</span>
             </div>
             <p className="text-gray-700 mb-4">
-              {ProductDetalisObject?.escription}
+              description
             </p>
 
             <div className="flex items-center space-x-3 mb-4">
               <button className="px-3 py-1 border rounded cursor-pointer "  >-</button>
-              <span>{numOfCartItems}</span>
+              <span>num of cart iterms</span>
               <button className="px-3 py-1 border rounded cursor-pointer"  >+</button>
-              <button onClick={handleAddToCart} className="bg-pink-400 cursor-pointer text-white px-4 py-2 rounded hover:bg-pink-500">
+              <button  className="bg-pink-400 cursor-pointer text-white px-4 py-2 rounded hover:bg-pink-500">
                 Add to Cart
               </button>
             </div>

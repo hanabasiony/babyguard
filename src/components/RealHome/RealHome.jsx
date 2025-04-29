@@ -12,6 +12,7 @@ import Slider from "react-slick"
 
 export default function Home() {
     return (
+    
       <div className="min-h-screen ">
         {/* Hero Section */}
         <section className="container px-14 bg-gradient-to-r from-pink-50 to-blue-50  mx-auto px-4 py-12 md:py-20 flex flex-col md:flex-row items-center">

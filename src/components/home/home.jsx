@@ -1,64 +1,135 @@
+import React, { useEffect, useState } from 'react'
+import { Link } from "react-router-dom";
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
 import { FallingLines } from 'react-loader-spinner'
 import LoaderScreen from '../loaderScreen/loaderScreen'
 import SimpleSlider from '../homeSlider/homeSlider'
 import CategoriesSlider from '../categoriesSlider/categoriesSlider'
 import { useQuery } from '@tanstack/react-query'
-import { Link, useNavigate } from "react-router-dom";
 import { CartContext } from '../../context/CartContext'
 import toast from 'react-hot-toast'
-
+import './home.css'
 
 export default function Home() {
+    const [products, setProducts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [productQuantities, setProductQuantities] = useState({});
 
-    const { addProductsToCart } = useContext(CartContext)
-    const [loadingButtun, setLoadingButtun] = useState(false)
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                console.log('Starting API call...'); 
+                const token = localStorage.getItem('token');
+               
+                
+                const response = await axios.get('http://localhost:8000/api/products', {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                setProducts(response.data.data);
+                setLoading(false);
+            } catch (err) {
+                setError('Failed to fetch products');
+                setLoading(false);
+                console.error('Error fetching products:', err);
+            }
+        };
 
-    function getAllProducts2() {
-        // return axios.get('http://localhost:8000/api/products')
-        return axios.get('https://ecommerce.routemisr.com/api/v1/products')
+        fetchProducts();
+    }, []);
+
+    if (loading) {
+        return <LoaderScreen />;
     }
 
-    const { data, isError, error, isLoading, isFetching } = useQuery({
-        queryKey: ['getAllProsucts'],
-        queryFn: getAllProducts2
-    })
-    const navigate = useNavigate()
-
-    // function navigatePayment(){
-    //     navigate('/payment/')
-    // }
-
-    function handleLoadingButton(){
-        
+    if (error) {
+        return <div className="error-message">{error}</div>;
     }
 
-    async function handleAddProduct(id) {
-        const res = await addProductsToCart(id)
+    async function handleAddToCart(e, productId) {
+        e.preventDefault();
+        try {
+            const token = localStorage.getItem('token');
+            const cartId = localStorage.getItem('cartId');
+            
+            const response = await axios.post(
+                `http://localhost:8000/api/carts/${cartId}/products`,
+                {
+                    productId: productId,
+                    quantity: 1
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            
+            setProductQuantities(prev => ({
+                ...prev,
+                [productId]: (prev[productId] || 0) + 1
+            }));
 
-        if (res) {
-            toast.success('Product added successfully! ', { duration: 3000, position: 'top-center' })
-            setLoadingButtun(false)
+            console.log('Product added to cart:', response.data);
+            toast.success('Product added to cart successfully!');
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+            toast.error('Failed to add product to cart');
         }
     }
 
-    console.log('data', data);
-    console.log('isError', isError);
-    console.log('error', error);
-    console.log('isLoading', isLoading);
-    console.log('isFetching', isFetching);
+    async function handleUpdateQuantity(e, productId, change) {
+        e.preventDefault();
+        try {
+            const token = localStorage.getItem('token');
+            const cartId = localStorage.getItem('cartId');
+            const newQuantity = (productQuantities[productId] || 0) + change;
+            
+            if (newQuantity < 0) return;
 
+            let response;
+            if (productQuantities[productId] > 0) {
+                // Use PATCH for existing products
+                response = await axios.patch(
+                    `http://localhost:8000/api/carts/${cartId}/products/${productId}`,
+                    {
+                        quantity: newQuantity
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+            } else {
+                // Use POST for new products
+                response = await axios.post(
+                    `http://localhost:8000/api/carts/${cartId}/products`,
+                    {
+                        productId: productId,
+                        quantity: newQuantity
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    }
+                );
+            }
+            
+            setProductQuantities(prev => ({
+                ...prev,
+                [productId]: newQuantity
+            }));
 
-    if (isLoading) {
-        return <LoaderScreen />
+            console.log('Cart updated:', response.data);
+        } catch (error) {
+            console.error('Error updating cart:', error);
+            toast.error('Failed to update cart');
+        }
     }
-    if (isError) {
-        return <div>{isError}</div>
-    }
-
-
-
 
     return (
         <>
@@ -67,50 +138,53 @@ export default function Home() {
             <CategoriesSlider /> */}
             <div className="wrapper py-40 px-10 mx-auto">
                 <div className='container mx-auto '>
-                    
-
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 mx-auto justify-items-center">
-
-                        {data.data.data?.map(product =>
-                            <Link to={`/productDetails/${product._id}`}  key={product._id} className="bg-white pb-15  rounded-2xl relative shadow-md p-4 flex flex-col items-center text-center w-64 group hover:scale-105 transition-all">
-                                {/* <div className='absolute  top-5 left-3 w-10 h-10  shadow flex justify-center items-center rounded group-hover:left-4 transition-all '>
-                                    <button onClick={function (e) {
-                                    handleAddProduct(product._id)
-                                    e.preventDefault()
-                                } }className='cursor-pointer flex justify-center items-center '><i class="fa-solid fa-cart-plus text-2xl text-green-400"></i></button>
-                                </div> */}
-
-                                {/* <div className='absolute  top-5 right-3 w-10 h-10  shadow flex justify-center items-center rounded group-hover:right-4 transition-all'>
-                                    <button className='cursor-pointer flex justify-center items-center '><i class="fa-solid fa-cart-arrow-down text-2xl text-red-400"></i></button>
-                                </div>  */}
-
-                                <img src={product.imageCover} alt={product.title} className=' w-24 h-24 mb-4' />
+                        {products.map((product) => (
+                            <Link
+                                to={`/productDetails/${product._id}`}
+                                key={product._id}
+                                className="bg-white pb-15 rounded-2xl relative shadow-md p-4 flex flex-col items-center text-center w-64 group hover:scale-105 transition-all"
+                            >
+                                <img 
+                                    src={product.image} 
+                                    alt={product.name} 
+                                    className='w-24 h-24 mb-4 object-cover'
+                                />
                                 <h3 className='text-lg font-semibold text-blue-600 mb-1'>{product.name}</h3>
                                 <h2 className='text-blue-600'>{product.description}</h2>
+                                <p className='text-blue-400 mb-3 font-semibold'>EGP: {product.price}</p>
 
-                                    
-
-                                <p className='text-blue-400 mb-3 font-semibold'>EGP {product.price}</p>
-
-
-                                <button onClick={function (e) {
-                                    handleAddProduct(product._id)
-                                    e.preventDefault()
-                                    setLoadingButtun(true)
-                                }
-                                } class="bg-pink-400 absolute bottom-3  hover:bg-pink-500 text-white font-medium py-2 px-4 rounded-full cursor-pointer" >
-                                    {/* {loadingButtun ? 'Loading...... ' : 'Add to Cart'} */}
-                                    Add to Cart
-                                </button>
-
-                            </Link>)}
-
-
-
+                                {productQuantities[product._id] > 0 ? (
+                                    <div className="flex items-center justify-center gap-2 absolute bottom-3">
+                                        <button 
+                                            onClick={(e) => handleUpdateQuantity(e, product._id, -1)}
+                                            className="bg-pink-400 hover:bg-pink-500 text-white font-medium w-8 h-8 rounded-full flex items-center justify-center"
+                                        >
+                                            -
+                                        </button>
+                                        <span className="bg-pink-400 text-white font-medium px-3 py-1 rounded-full">
+                                            {productQuantities[product._id]}
+                                        </span>
+                                        <button 
+                                            onClick={(e) => handleUpdateQuantity(e, product._id, 1)}
+                                            className="bg-pink-400 hover:bg-pink-500 text-white font-medium w-8 h-8 rounded-full flex items-center justify-center"
+                                        >
+                                            +
+                                        </button>
+                                    </div>
+                                ) : (
+                                    <button 
+                                        onClick={(e) => handleAddToCart(e, product._id)} 
+                                        className="bg-pink-400 absolute bottom-3 hover:bg-pink-500 text-white font-medium py-2 px-4 rounded-full cursor-pointer"
+                                    >
+                                        Add to Cart
+                                    </button>
+                                )}
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </div>
         </>
-
-    )
+    );
 }

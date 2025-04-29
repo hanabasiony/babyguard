@@ -4,22 +4,31 @@ export const authContext = createContext()
 
 export default function AuthcontextProvider({ children }) {
 
-    // const [userToken, setuserToken] = useState(null)
+    const [userToken, setuserToken] = useState(null)
+    const [loading, setLoading] = useState(true);
+    // const [ isAdmin , setIsAdmin ] = useState(null)
+    // const [ role , setRole ] = useState(null)
+
+
 
    
 
-    // useEffect(function(){
-    //     console.log("refreshed");
+    useEffect(function(){
+        console.log("refreshed");
         
-    //     if( localStorage.getItem('tkn') != null){
-    //         setuserToken(localStorage.getItem('tkn'))
-    //     }
-    // } , [])
+        if( localStorage.getItem('token') != null){
+            setuserToken(localStorage.getItem('token'))
+        }
+        // if( localStorage.getItem('role') != null){
+        //     setuserToken(localStorage.getItem('role'))
+        // }
+
+    } , [])
      
     return (
         <>
             <authContext.Provider value={ {
-                // userToken, setuserToken
+                userToken, setuserToken
              } }>
                 {children}
 

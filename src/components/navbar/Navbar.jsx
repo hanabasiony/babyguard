@@ -11,6 +11,7 @@ import { authContext } from '../../context/AuthContext';
 import Home from './../home/home';
 import { ShoppingCart } from 'lucide-react'
 import { CartContext } from '../../context/CartContext';
+import axios from 'axios';
 
 
 
@@ -20,84 +21,155 @@ export default function Navbar() {
    const { numOfCartItems } = useContext(CartContext)
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate()
-  function handleLogout() {
-    localStorage.removeItem('tkn')
-    setuserToken(null)
-    navigate('./login')
+  const [loading, setLoading] = useState(false);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+
+  async function handleLogout() {
+    try {
+        // First try to delete the cart
+        const cartId = localStorage.getItem('cartId');
+        // const cartId = '68102814d2dae0db51b3960d'
+
+        
+        if (cartId) {
+            setLoading(true);
+            try {
+                const response = await axios.delete(
+                    `http://localhost:8000/api/carts/${cartId}`,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${userToken}`
+                        }
+                    }
+                );
+
+                if (response.status === 200) {
+                    // Only proceed with logout if cart is successfully deleted
+                    localStorage.removeItem('cartId');
+                    // localStorage.removeItem('cartDetails');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('role');
+                    setuserToken(null);
+                    navigate('/login');
+                    console.log('cart deleted',response);
+                    
+                } else {
+                    throw new Error('Failed to delete cart');
+                    console.log('cart not deleted',response);
+                }
+            } catch (cartError) {
+                console.error('Cart deletion error:', cartError);
+                
+                // Handle specific error cases
+                if (cartError.response) {
+                    const errorMessage = cartError.response.data?.message || 'Failed to delete cart';
+                    
+                    if (cartError.response.status === 404) {
+                        setErrorMessage('Cart not found. Please try again.');
+                    } else if (cartError.response.status === 400) {
+                        setErrorMessage(errorMessage);
+                    } else if (cartError.response.status === 401) {
+                        setErrorMessage('Session expired. Please login again.');
+                    } else {
+                        setErrorMessage('Cannot logout: ' + errorMessage);
+                    }
+                } else {
+                    setErrorMessage('Network error. Please check your connection.');
+                }
+                
+                setTimeout(() => setErrorMessage(''), 3000);
+                return; // Prevent logout on any cart deletion error
+            }
+        } else {
+            // If no cart exists, allow logout
+            localStorage.removeItem('token');
+            localStorage.removeItem('role');
+            setuserToken(null);
+            navigate('/login');
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+        setErrorMessage('An unexpected error occurred. Please try again.');
+        setTimeout(() => setErrorMessage(''), 3000);
+    } finally {
+        setLoading(false);
+    }
+  }
+
+  async function deleteCart() {
+    // Get cart ID from localStorage
+    const cartId = localStorage.getItem('cartId');
+    
+    // Check if cart ID exists
+    if (!cartId) {
+        console.error('No cart ID found in localStorage');
+        return;
+    }
+
+    try {
+        // Show loading state if needed
+        setLoading(true);
+
+        // Make the delete request
+        const response = await axios.delete(
+            `http://localhost:8000/api/carts/${cartId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${userToken}`
+                }
+            }
+        );
+
+        // Log success
+        console.log('Cart deleted successfully:', response.data);
+
+        // Clear cart data from localStorage
+        localStorage.removeItem('cartId');
+        localStorage.removeItem('cartDetails');
+
+        // Show success message to user
+        setSuccessMessage('Cart deleted successfully');
+        setTimeout(() => setSuccessMessage(''), 3000);
+
+        // Refresh the page or update the UI as needed
+        window.location.reload();
+
+    } catch (error) {
+        // Handle different types of errors
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.error('Error response:', error.response.data);
+            console.error('Error status:', error.response.status);
+            
+            if (error.response.status === 404) {
+                setErrorMessage('Cart not found');
+            } else if (error.response.status === 401) {
+                setErrorMessage('Unauthorized - Please login again');
+            } else {
+                setErrorMessage('Failed to delete cart');
+            }
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error('No response received:', error.request);
+            setErrorMessage('Network error - Please check your connection');
+        } else {
+            // Something happened in setting up the request that triggered an Error
+            console.error('Error setting up request:', error.message);
+            setErrorMessage('An error occurred while deleting the cart');
+        }
+
+        // Clear error message after 3 seconds
+        setTimeout(() => setErrorMessage(''), 3000);
+    } finally {
+        // Reset loading state
+        setLoading(false);
+    }
   }
   return (
     <>
-      {/* <nav className='flex items-center justify-between px-10 shadow shadow-pink-300 bg-pink-50'>
-        <div className="left-nav flex items-center gap-3 ">
-          <Link to='' className={'flex justify-center align-middle'}>
-         
-            <img src={logobaby} alt="fresh cart" style={{width:'80px'}} />
-            <h1 className='text-pink-300 text-xl mt-6.5 font-bold'>Baby guard</h1>
-          </Link>
-
-          <ul className='flex item-center space-x-4 '>
-
-            <li>
-              <NavLink to='/products' className={'text-gray-600'}>
-                products
-              </NavLink>
-            </li>
-
-            <li>
-              <NavLink to='/categories' className={'text-gray-600'}>
-                categories
-              </NavLink>
-            </li>
-
-            <li>
-              <NavLink to='/cart' className={'text-gray-600'}>
-                cart
-              </NavLink>
-            </li>
-
-
-          </ul>
-        </div>
-
-
-
-        <div className="right-nav  flex items-center justify-center gap-5">
-          <ul className='flex gap-4 '>
-
-            <li>
-              <i className='fa-brands cursor-pointer text-gray-600 fa-facebook-f'></i>
-            </li>
-
-            <li>
-              <i className='fa-brands cursor-pointer text-gray-600 fa-twitter'></i>
-            </li>
-
-            <li>
-              <i className='fa-brands cursor-pointer text-gray-600 fa-instagram'></i>
-            </li>
-
-            <li>
-              <i className='fa-brands cursor-pointer text-gray-600 fa-linkedin'></i>
-            </li>
-          </ul>
-
-          <ul className='flex items-center gap-3'>
-
-            <li>
-              <NavLink className={'text-gray-600'} to='/Reg'>Regestir</NavLink>
-            </li>
-
-            <li>
-              <NavLink className={'text-gray-600'} to='/login'>Login</NavLink>
-            </li>
-
-            <li>
-              <span className='text-gray-600'>Logout</span>
-            </li>
-            <Btn>Get started</Btn>
-          </ul>
-        </div>
-      </nav> */}
+     
 
       <nav className="bg-pink-50 shadow pe-7 shadow-pink-300 px-2 fixed mb-6 py-2">
         <div className="container mx-auto flex items-center justify-between">
