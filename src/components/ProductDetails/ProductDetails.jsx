@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Star } from "lucide-react";
+import { Star, Trash } from "lucide-react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { CartContext } from "../../context/CartContext";
@@ -10,7 +10,7 @@ import Categories from './../categories/categories';
 
 export default function ProductDetails() {
     const { id } = useParams();
-    const { productQuantities, handleAddToCart, handleUpdateQuantity, loadingProducts } = useContext(CartContext);
+    const { productQuantities, handleAddToCart, handleUpdateQuantity, loadingProducts, handleDeleteProduct } = useContext(CartContext);
 
     const { data: products, isLoading, error } = useQuery({
         queryKey: ['products'],
@@ -134,6 +134,12 @@ export default function ProductDetails() {
                                         className="bg-pink-400 hover:bg-pink-500 cursor-pointer text-white font-medium w-8 h-8 rounded-full flex items-center justify-center"
                                     >
                                         +
+                                    </button>
+                                    <button 
+                                        onClick={(e) => handleDeleteProduct(e, product._id)}
+                                        className="bg-pink-400 hover:bg-pink-500 cursor-pointer text-white font-medium w-8 h-8 rounded-full flex items-center justify-center"
+                                    >
+                                        <Trash size={16} />
                                     </button>
                                 </div>
                             ) : (

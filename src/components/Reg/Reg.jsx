@@ -1,4 +1,3 @@
-
 import { useFormik } from 'formik'
 import React, { useContext, useState } from 'react'
 import values from './../../../node_modules/lodash-es/values';
@@ -53,7 +52,14 @@ export default function Reg() {
         // console.log(values);
         setLoading(true)
         setIsClicked(true)
-        const data = await axios.post('http://localhost:8000/api/auth/signup', values)
+        
+        // Format the birthDate to YYYY-MM-DD
+        const formattedValues = {
+            ...values,
+            birthDate: new Date(values.birthDate).toISOString().split('T')[0]
+        };
+
+        const data = await axios.post('http://localhost:8000/api/auth/signup', formattedValues)
             .then(function (succ) {
               
 
@@ -108,7 +114,10 @@ export default function Reg() {
                     lName: yup.string().required("name is required").min(3, "minimum must be 3 characters").max(12, "maximum must be 12 values"),
                     email: yup.string().email('invalid email'),
                     nationalIdNumer: yup.string().required('national id is req').min(14).max(14),
-                    birthDate: yup.date().required("Birth date is required"),
+                    birthDate: yup.date()
+                        .required("Birth date is required")
+                        .max(new Date(), "Birth date cannot be in the future")
+                        .min(new Date(1900, 0, 1), "Birth date must be after 1900"),
                     password: yup.string().required('password is required').min(6),
                     passwordConfirm: yup.string().required('password is required').oneOf([yup.ref('password'), 'passwords dont match']),
                     phoneNumber: yup.string().required('phone number is req').matches(/^01[0-2,5]{1}[0-9]{8}$/, 'must be EGP number'),
@@ -189,11 +198,28 @@ export default function Reg() {
 
 
                 <div className="relative z-0 w-full mb-5 group">
-                    <input value={regFormik.values.birthDate} onBlur={regFormik.handleBlur} onChange={regFormik.handleChange} type="text" name="birthDate" id="birthDate" className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none  dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
-                    <label htmlFor="birthDate" className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">birthDate</label>
-                    {regFormik.errors.birthDate && regFormik.touched.birthDate ? <div class="p-4  mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-                        {regFormik.errors.birthDate}
-                    </div> : ''}
+                    <input 
+                        value={regFormik.values.birthDate} 
+                        onChange={regFormik.handleChange} 
+                        onBlur={regFormik.handleBlur} 
+                        type="date" 
+                        name="birthDate" 
+                        id="birthDate" 
+                        className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" 
+                        placeholder=" " 
+                        required 
+                    />
+                    <label 
+                        htmlFor="birthDate" 
+                        className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                    >
+                        Birth Date
+                    </label>
+                    {regFormik.errors.birthDate && regFormik.touched.birthDate ? (
+                        <div className="p-4 mt-2 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                            {regFormik.errors.birthDate}
+                        </div>
+                    ) : null}
                 </div>
 
 

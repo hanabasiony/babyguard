@@ -11,7 +11,7 @@ const Cart = () => {
     const navigate = useNavigate();
     const [cartData, setCartData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { handleUpdateQuantity, loadingProducts, productQuantities } = useContext(CartContext);
+    const { handleUpdateQuantity, loadingProducts, productQuantities, handleDeleteProduct } = useContext(CartContext);
 
     const fetchCartData = async () => {
         try {
@@ -19,6 +19,7 @@ const Cart = () => {
             const token = localStorage.getItem('token');
             
             if (!cartId) {
+                setCartData(null);
                 setLoading(false);
                 return;
             }
@@ -29,10 +30,18 @@ const Cart = () => {
                 }
             });
             
-            setCartData(response.data.data);
+            // Check if the cart has any products
+            if (!response.data.data.products || response.data.data.products.length === 0) {
+                setCartData(null);
+                localStorage.removeItem('cartId');
+                localStorage.removeItem('cartDetails');
+            } else {
+                setCartData(response.data.data);
+            }
         } catch (error) {
             console.error('Error fetching cart:', error);
             toast.error('Failed to fetch cart data');
+            setCartData(null);
         } finally {
             setLoading(false);
         }
@@ -55,10 +64,34 @@ const Cart = () => {
         return <LoaderScreen />;
     }
 
-    if (!cartData) {
+    if (!cartData || !cartData.products || cartData.products.length === 0) {
         return (
             <div className="max-w-5xl py-30 mx-auto p-6 bg-whitw min-h-screen">
-                <p className="text-center text-gray-500">Your cart is empty</p>
+                <div className="text-center">
+                    <div className="mb-8">
+                        <svg 
+                            className="mx-auto h-24 w-24 text-gray-400" 
+                            fill="none" 
+                            viewBox="0 0 24 24" 
+                            stroke="currentColor"
+                        >
+                            <path 
+                                strokeLinecap="round" 
+                                strokeLinejoin="round" 
+                                strokeWidth={2} 
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" 
+                            />
+                        </svg>
+                    </div>
+                    <h2 className="text-2xl font-semibold text-gray-700 mb-4">Your cart is empty</h2>
+                    <p className="text-gray-500 mb-6">Looks like you haven't added any products to your cart yet.</p>
+                    <button 
+                        onClick={() => navigate('/products')}
+                        className="bg-pink-400 hover:bg-pink-500 text-white font-medium py-2 px-6 rounded-full cursor-pointer transition-colors duration-200"
+                    >
+                        Continue Shopping
+                    </button>
+                </div>
             </div>
         );
     }
@@ -67,9 +100,12 @@ const Cart = () => {
 
     return (
         <div className="max-w-5xl py-30 mx-auto p-6 bg-whitw min-h-screen">
-            <p className="text-pink-500 mb-6 text-lg font-medium">
-                Total: {cart.totalPrice} EGP
-            </p>
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-2xl font-semibold text-gray-700">Your Cart</h1>
+                <p className="text-pink-500 text-lg font-medium">
+                    Total: {cart.totalPrice} EGP
+                </p>
+            </div>
 
             {products.map((product) => (
                 <div
@@ -87,7 +123,7 @@ const Cart = () => {
                             <p className="text-pink-500 font-medium text-sm">Price: {product.price} EGP</p>
                             <button
                                 className="mt-2 flex items-center text-xs text-pink-400 cursor-pointer hover:underline"
-                                onClick={(e) => handleQuantityChange(e, product.productId, -product.quantity)}
+                                onClick={(e) => handleDeleteProduct(e, product.productId)}
                             >
                                 <Trash className="w-4 h-4 mr-1" /> Remove
                             </button>
@@ -134,7 +170,7 @@ const Cart = () => {
             <div className="mt-6 text-center">
                 <button 
                     onClick={() => navigate('/payment')} 
-                    className="bg-pink-500 text-white px-6 py-3 rounded-full shadow hover:bg-pink-600 cursor-pointer text-lg font-semibold"
+                    className="bg-pink-500 text-white px-6 py-3 rounded-full shadow hover:bg-pink-600 cursor-pointer text-lg font-semibold transition-colors duration-200"
                 >
                     Proceed to Checkout
                 </button>

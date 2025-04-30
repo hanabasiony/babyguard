@@ -201,6 +201,45 @@ export default function CartContextProvider({ children }) {
         }
     };
 
+    const handleDeleteProduct = async (e, productId) => {
+        e.preventDefault();
+        try {
+            setLoadingProducts(prev => ({ ...prev, [productId]: true }));
+            const token = localStorage.getItem('token');
+            const cartId = await getOrCreateCart();
+            
+            await axios.delete(
+                `http://localhost:8000/api/carts/${cartId}/products/${productId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            
+            // Update local state
+            setProductQuantities(prev => {
+                const newQuantities = { ...prev };
+                delete newQuantities[productId];
+                
+                // If this was the last product, clear the cart
+                if (Object.keys(newQuantities).length === 0) {
+                    localStorage.removeItem('cartId');
+                    localStorage.removeItem('cartDetails');
+                }
+                
+                return newQuantities;
+            });
+
+            toast.success('Product removed from cart');
+        } catch (error) {
+            console.error('Error deleting product:', error);
+            toast.error('Failed to remove product from cart');
+        } finally {
+            setLoadingProducts(prev => ({ ...prev, [productId]: false }));
+        }
+    };
+
     const getTotalItems = () => {
         return Object.values(productQuantities).reduce((total, quantity) => total + quantity, 0);
     };
@@ -212,7 +251,8 @@ export default function CartContextProvider({ children }) {
             handleUpdateQuantity,
             loadingProducts,
             totalItems: getTotalItems(),
-            resetCart
+            resetCart,
+            handleDeleteProduct
         }}>
             {children}
         </CartContext.Provider>

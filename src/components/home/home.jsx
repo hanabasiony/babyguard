@@ -16,7 +16,7 @@ export default function Home() {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { productQuantities, handleAddToCart, handleUpdateQuantity , loadingProducts } = useContext(CartContext);
+    const { productQuantities, handleAddToCart, handleUpdateQuantity, loadingProducts, handleDeleteProduct } = useContext(CartContext);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -105,7 +105,12 @@ export default function Home() {
                                         >
                                             +
                                         </button>
-                                        
+                                        <button 
+                                            onClick={(e) => handleDeleteProduct(e, product._id)}
+                                            className="bg-pink-400 hover:bg-pink-500 cursor-pointer text-white font-medium w-8 h-8 rounded-full flex items-center justify-center"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
                                     </div>
                                 ) : (
                                     <button 
