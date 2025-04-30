@@ -18,6 +18,15 @@ export default function CartContextProvider({ children }) {
         localStorage.setItem('productQuantities', JSON.stringify(productQuantities));
     }, [productQuantities]);
 
+    // Function to reset cart state
+    const resetCart = () => {
+        setProductQuantities({});
+        setLoadingProducts({});
+        localStorage.removeItem('productQuantities');
+        localStorage.removeItem('cartId');
+        localStorage.removeItem('cartDetails');
+    };
+
     const createCart = async () => {
         try {
             const token = localStorage.getItem('token');
@@ -202,7 +211,8 @@ export default function CartContextProvider({ children }) {
             handleAddToCart,
             handleUpdateQuantity,
             loadingProducts,
-            totalItems: getTotalItems()
+            totalItems: getTotalItems(),
+            resetCart
         }}>
             {children}
         </CartContext.Provider>

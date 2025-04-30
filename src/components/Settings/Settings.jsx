@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { authContext } from '../../context/AuthContext'
+import { CartContext } from '../../context/CartContext'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 
 export default function Settings() {
     const { userToken, setuserToken } = useContext(authContext)
+    const { resetCart } = useContext(CartContext)
     const navigate = useNavigate()
     const [cartDetails, setCartDetails] = useState(null)
 
@@ -37,17 +39,18 @@ export default function Settings() {
                 }
             }
 
-            // Clear all localStorage items
-            localStorage.removeItem('cartId');
+            // Reset cart state and clear localStorage
+            resetCart();
+
+            // Clear remaining localStorage items
             localStorage.removeItem('token');
             localStorage.removeItem('role');
-            localStorage.removeItem('productQuantities');
             localStorage.removeItem('cartTimestamp');
             localStorage.removeItem('userData');
-            localStorage.removeItem('cartDetails');
 
             // Reset context state
             setuserToken(null);
+            setCartDetails(null);
 
             // Show success message
             toast.success('Logged out successfully');

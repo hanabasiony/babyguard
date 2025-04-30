@@ -38,7 +38,7 @@ import { Toaster } from 'react-hot-toast'
 import Cart from './components/Cart/Cart'
 import AdminPannel from './components/adminPanel/adminPannel'
 import ProtectedRouteAdmin from './context/ProtectdRouteAdmin'
-import Settings from './components/settings/Settings'
+import Settings from './components/Settings/Settings'
 
 
 
