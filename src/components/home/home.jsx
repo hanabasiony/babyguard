@@ -17,6 +17,74 @@ export default function Home() {
     const [productQuantities, setProductQuantities] = useState({});
 
     useEffect(() => {
+        // Check for cart expiration on component mount
+        checkCartExpiration();
+        
+        // Set up interval to check cart expiration every minute
+        const intervalId = setInterval(checkCartExpiration, 60000);
+
+        // Set up beforeunload event listener
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        // Cleanup function
+        return () => {
+            clearInterval(intervalId);
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    }, []);
+
+    const checkCartExpiration = async () => {
+        const cartId = localStorage.getItem('cartId');
+        const cartTimestamp = localStorage.getItem('cartTimestamp');
+        
+        if (cartId && cartTimestamp) {
+            const now = Date.now();
+            const cartAge = now - parseInt(cartTimestamp);
+            const fifteenMinutes = 15 * 60 * 1000; // 15 minutes in milliseconds
+
+            if (cartAge > fifteenMinutes) {
+                try {
+                    const token = localStorage.getItem('token');
+                    await axios.delete(`http://localhost:8000/api/carts/${cartId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
+                    });
+                    
+                    // Clear cart data from localStorage
+                    localStorage.removeItem('cartId');
+                    localStorage.removeItem('cartTimestamp');
+                    setProductQuantities({});
+                    
+                    console.log('Cart deleted due to expiration');
+                } catch (error) {
+                    console.error('Error deleting expired cart:', error);
+                }
+            }
+        }
+    };
+
+    const handleBeforeUnload = async () => {
+        const cartId = localStorage.getItem('cartId');
+        if (cartId) {
+            try {
+                const token = localStorage.getItem('token');
+                await axios.delete(`http://localhost:8000/api/carts/${cartId}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                
+                // Clear cart data from localStorage
+                localStorage.removeItem('cartId');
+                localStorage.removeItem('cartTimestamp');
+            } catch (error) {
+                console.error('Error deleting cart on browser close:', error);
+            }
+        }
+    };
+
+    useEffect(() => {
         const fetchProducts = async () => {
             try {
                 console.log('Starting API call...'); 
@@ -66,6 +134,9 @@ export default function Home() {
                     }
                 }
             );
+            
+            // Set or update cart timestamp
+            localStorage.setItem('cartTimestamp', Date.now().toString());
             
             setProductQuantities(prev => ({
                 ...prev,
@@ -119,15 +190,25 @@ export default function Home() {
                 );
             }
             
+            // Update cart timestamp on any cart activity
+            localStorage.setItem('cartTimestamp', Date.now().toString());
+            
             setProductQuantities(prev => ({
                 ...prev,
                 [productId]: newQuantity
             }));
 
+            // Show appropriate toast message based on the change
+            if (change > 0) {
+                toast.success(`Quantity increased to ${newQuantity}`);
+            } else {
+                toast.success(`Quantity decreased to ${newQuantity}`);
+            }
+
             console.log('Cart updated:', response.data);
         } catch (error) {
             console.error('Error updating cart:', error);
-            toast.error('Failed to update cart');
+            toast.error('Failed to update cart quantity');
         }
     }
 
@@ -143,7 +224,7 @@ export default function Home() {
                             <Link
                                 to={`/productDetails/${product._id}`}
                                 key={product._id}
-                                className="bg-white pb-15 rounded-2xl relative shadow-md p-4 flex flex-col items-center text-center w-64 group hover:scale-105 transition-all"
+                                className="bg-white pb-15 rounded-2xl relative shadow-md p-4 flex flex-col items-center text-center w-64 group  transition-all"
                             >
                                 <img 
                                     src={product.image} 
@@ -158,7 +239,7 @@ export default function Home() {
                                     <div className="flex items-center justify-center gap-2 absolute bottom-3">
                                         <button 
                                             onClick={(e) => handleUpdateQuantity(e, product._id, -1)}
-                                            className="bg-pink-400 hover:bg-pink-500 text-white font-medium w-8 h-8 rounded-full flex items-center justify-center"
+                                            className="bg-pink-400 hover:bg-pink-500 cursor-pointer text-white font-medium w-8 h-8 rounded-full flex items-center justify-center"
                                         >
                                             -
                                         </button>
@@ -167,7 +248,7 @@ export default function Home() {
                                         </span>
                                         <button 
                                             onClick={(e) => handleUpdateQuantity(e, product._id, 1)}
-                                            className="bg-pink-400 hover:bg-pink-500 text-white font-medium w-8 h-8 rounded-full flex items-center justify-center"
+                                            className="bg-pink-400 hover:bg-pink-500 cursor-pointer text-white font-medium w-8 h-8 rounded-full flex items-center justify-center"
                                         >
                                             +
                                         </button>
