@@ -1,4 +1,4 @@
-/* Wrapper and Container
+ Wrapper and Container
 .wrapper {
     background-color: #f8f9fa;
     min-height: 100vh;
@@ -8,7 +8,7 @@
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
-}  */
+}  
 
 /* Product Card
 .product-card {

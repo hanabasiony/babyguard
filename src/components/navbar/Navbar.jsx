@@ -18,7 +18,7 @@ import axios from 'axios';
 
 export default function Navbar() {
   const { userToken, setuserToken } = useContext(authContext)
-   const { numOfCartItems } = useContext(CartContext)
+   const { totalItems } = useContext(CartContext)
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate()
   const [loading, setLoading] = useState(false);
@@ -171,8 +171,8 @@ export default function Navbar() {
     <>
      
 
-      <nav className="bg-pink-50 shadow pe-7 shadow-pink-300 px-2 fixed mb-6 py-2">
-        <div className="container mx-auto flex items-center justify-between">
+      <nav className="bg-pink-50 shadow pe-7 shadow-pink-300 px-2 fixed mb-6 py-2 w-full">
+        <div className="container mx-auto flex items-center justify-between max-w-[1200px]">
           {/* Left Side: Logo & Links */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center space-x-2">
@@ -225,18 +225,16 @@ export default function Navbar() {
                   <li><span onClick={handleLogout} className="text-pink-300 cursor-pointer hover:text-pink-400">Logout</span></li>
                   <li><NavLink to="/UpdatePass" className="text-pink-300 hover:text-pink-400">Change Password</NavLink></li>
                   <div className="cart">
-
-                    < NavLink to="/cart">
+                    <NavLink to="/cart">
                       <div className="relative inline-block">
                         <ShoppingCart className="w-6 h-6 text-pink-700" />
-                       
+                        {totalItems > 0 && (
                           <span className="absolute -top-2 -right-2 bg-pink-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
-                            {numOfCartItems}
+                            {totalItems}
                           </span>
-                        
+                        )}
                       </div>
                     </NavLink>
-
                   </div>
                 </>
                 :
