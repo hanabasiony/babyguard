@@ -38,6 +38,7 @@ import { Toaster } from 'react-hot-toast'
 import Cart from './components/Cart/Cart'
 import AdminPannel from './components/adminPanel/adminPannel'
 import ProtectedRouteAdmin from './context/ProtectdRouteAdmin'
+import Settings from './components/settings/Settings'
 
 
 
@@ -50,6 +51,7 @@ const router = createBrowserRouter([
       { path: 'login', element: <Login /> },
       { path: 'UpdatePass', element: <UpdateLoggedUserPassword /> },
       { path: 'Reg', element: <Reg /> },
+      { path: 'settings', element: <Settings /> },
       { path: '*', element: <Notfound /> },
       {
         path: 'products',

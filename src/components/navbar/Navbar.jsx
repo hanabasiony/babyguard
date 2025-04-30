@@ -9,7 +9,7 @@ import Reg from '../Reg/Reg'
 // import Btn from './btn';
 import { authContext } from '../../context/AuthContext';
 import Home from './../home/home';
-import { ShoppingCart } from 'lucide-react'
+import { ShoppingCart, Settings } from 'lucide-react'
 import { CartContext } from '../../context/CartContext';
 import axios from 'axios';
 
@@ -217,13 +217,14 @@ export default function Navbar() {
 
           {/* Right Side: Socials & Buttons */}
           <div className="hidden md:flex items-center space-x-5">
-
-
             <ul className="flex items-center space-x-3">
-              {userToken ?
+              {userToken ? (
                 <>
-                  <li><span onClick={handleLogout} className="text-pink-300 cursor-pointer hover:text-pink-400">Logout</span></li>
-                  <li><NavLink to="/UpdatePass" className="text-pink-300 hover:text-pink-400">Change Password</NavLink></li>
+                  <li>
+                    <NavLink to="/settings" className="text-pink-300 hover:text-pink-400">
+                      <Settings className="w-6 h-6" />
+                    </NavLink>
+                  </li>
                   <div className="cart">
                     <NavLink to="/cart">
                       <div className="relative inline-block">
@@ -237,13 +238,13 @@ export default function Navbar() {
                     </NavLink>
                   </div>
                 </>
-                :
-                <>
-                  <li><NavLink to="/Reg" className="text-pink-300 hover:text-pink-400">Register</NavLink></li>
-                  <li><NavLink to="/login" className="text-pink-300 hover:text-pink-400">Login</NavLink></li>
-
-                </>
-              }
+              ) : (
+                <li>
+                  <NavLink to="/settings" className="text-pink-300 hover:text-pink-400">
+                    <Settings className="w-6 h-6" />
+                  </NavLink>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -262,24 +263,12 @@ export default function Navbar() {
               <li><NavLink to="/" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Pergnancy tips</NavLink></li>
               <li><NavLink to="/" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Contant us</NavLink></li>
               <li><NavLink to="/aboutUs" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>About us</NavLink></li>
-              <li><NavLink to="/cart" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}> <i class="fa-solid fa-cart-shopping text-xl text-pink-500"> </i></NavLink></li>
-
-
-
-
-              {
-                userToken ?
-                  <>
-                    <li><span className="text-gray-600 cursor-pointer hover:text-pink-400 " onClick={handleLogout}>Logout</span></li>
-                    <li><NavLink to="/UpdatePass" className="text-pink-300 hover:text-pink-400">Change Password</NavLink></li>
-                  </>
-                  :
-                  <>
-                    <li><NavLink to="/Reg" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>Register</NavLink></li>
-                    <li><NavLink to="/login" className="text-gray-600 hover:text-pink-400" onClick={() => { setIsOpen(false) }}>Login</NavLink></li>
-                  </>
-              }
-
+              <li><NavLink to="/cart" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>
+                <i className="fa-solid fa-cart-shopping text-xl text-pink-500"></i>
+              </NavLink></li>
+              <li><NavLink to="/settings" className="text-gray-600 hover:text-pink-400" onClick={() => setIsOpen(false)}>
+                <Settings className="w-6 h-6" />
+              </NavLink></li>
             </ul>
           </div>
         )}
