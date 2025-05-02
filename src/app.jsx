@@ -130,7 +130,7 @@ const client = new QueryClient({
 
 
 
-export  function App() {
+export default function App() {
 
   return (
     <>

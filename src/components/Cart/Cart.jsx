@@ -201,7 +201,7 @@ const Cart = () => {
             </div>
 
             {/* Payment Options */}
-            <div className="mt-6 text-center flex flex-col gap-4 justify-between w-[60%] mx-auto">
+            <div className="mt-6 text-center flex flex-col gap-4 justify-between md:w-[60%] mx-auto">
                 <button
                     onClick={() => {
                         if (!isAddressConfirmed) {
