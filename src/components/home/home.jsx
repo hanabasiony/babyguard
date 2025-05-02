@@ -55,6 +55,7 @@ export default function Home() {
             {/* <SimpleSlider />
 
             <CategoriesSlider /> */}
+            
             <div className="wrapper py-70 px-10 mx-auto max-w-[1200px]">
                 <div className='container mx-auto mt-36 '>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6  md:gap-8 mx-auto justify-items-center">
