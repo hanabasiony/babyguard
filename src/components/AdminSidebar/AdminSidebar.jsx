@@ -7,6 +7,7 @@ const AdminSidebar = () => {
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen)
+    console.log('hii')
   }
 
   return (
@@ -17,6 +18,7 @@ const AdminSidebar = () => {
       </button>
 
       {/* Sidebar */}
+
       <div
         className={`fixed inset-y-0 left-0 transform ${isOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 transition duration-200 ease-in-out z-30 w-64 bg-blue-50 overflow-y-auto`}
       >
