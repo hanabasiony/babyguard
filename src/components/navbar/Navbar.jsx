@@ -29,8 +29,6 @@ export default function Navbar() {
     try {
         // First try to delete the cart
         const cartId = localStorage.getItem('cartId');
-        // const cartId = '68102814d2dae0db51b3960d'
-
         
         if (cartId) {
             setLoading(true);
@@ -47,16 +45,14 @@ export default function Navbar() {
                 if (response.status === 200) {
                     // Only proceed with logout if cart is successfully deleted
                     localStorage.removeItem('cartId');
-                    // localStorage.removeItem('cartDetails');
+                    localStorage.removeItem('cartDetails');
                     localStorage.removeItem('token');
                     localStorage.removeItem('role');
                     setuserToken(null);
                     navigate('/login');
                     console.log('cart deleted',response);
-                    
                 } else {
                     throw new Error('Failed to delete cart');
-                    console.log('cart not deleted',response);
                 }
             } catch (cartError) {
                 console.error('Cart deletion error:', cartError);
@@ -97,76 +93,6 @@ export default function Navbar() {
     }
   }
 
-  async function deleteCart() {
-    // Get cart ID from localStorage
-    const cartId = localStorage.getItem('cartId');
-    
-    // Check if cart ID exists
-    if (!cartId) {
-        console.error('No cart ID found in localStorage');
-        return;
-    }
-
-    try {
-        // Show loading state if needed
-        setLoading(true);
-
-        // Make the delete request
-        const response = await axios.delete(
-            `http://localhost:8000/api/carts/${cartId}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${userToken}`
-                }
-            }
-        );
-
-        // Log success
-        console.log('Cart deleted successfully:', response.data);
-
-        // Clear cart data from localStorage
-        localStorage.removeItem('cartId');
-        localStorage.removeItem('cartDetails');
-
-        // Show success message to user
-        setSuccessMessage('Cart deleted successfully');
-        setTimeout(() => setSuccessMessage(''), 3000);
-
-        // Refresh the page or update the UI as needed
-        window.location.reload();
-
-    } catch (error) {
-        // Handle different types of errors
-        if (error.response) {
-            // The request was made and the server responded with a status code
-            // that falls out of the range of 2xx
-            console.error('Error response:', error.response.data);
-            console.error('Error status:', error.response.status);
-            
-            if (error.response.status === 404) {
-                setErrorMessage('Cart not found');
-            } else if (error.response.status === 401) {
-                setErrorMessage('Unauthorized - Please login again');
-            } else {
-                setErrorMessage('Failed to delete cart');
-            }
-        } else if (error.request) {
-            // The request was made but no response was received
-            console.error('No response received:', error.request);
-            setErrorMessage('Network error - Please check your connection');
-        } else {
-            // Something happened in setting up the request that triggered an Error
-            console.error('Error setting up request:', error.message);
-            setErrorMessage('An error occurred while deleting the cart');
-        }
-
-        // Clear error message after 3 seconds
-        setTimeout(() => setErrorMessage(''), 3000);
-    } finally {
-        // Reset loading state
-        setLoading(false);
-    }
-  }
   return (
     <>
      

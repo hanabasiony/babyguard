@@ -64,39 +64,6 @@ export default function CartContextProvider({ children }) {
         return cartId;
     };
 
-    const handleBeforeUnload = async () => {
-        const cartId = localStorage.getItem('cartId');
-        if (cartId) {
-            try {
-                const token = localStorage.getItem('token');
-                await axios.delete(`http://localhost:8000/api/carts/${cartId}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
-                
-                // Clear all cart-related data from localStorage
-                localStorage.removeItem('cartId');
-                localStorage.removeItem('productQuantities');
-                setProductQuantities({});
-                
-                console.log('Cart deleted on browser close');
-            } catch (error) {
-                console.error('Error deleting cart on browser close:', error);
-            }
-        }
-    };
-
-    useEffect(() => {
-        // Set up beforeunload event listener
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        // Cleanup function
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    }, []);
-
     const handleAddToCart = async (e, productId) => {
         e.preventDefault();
         try {
@@ -221,13 +188,6 @@ export default function CartContextProvider({ children }) {
             setProductQuantities(prev => {
                 const newQuantities = { ...prev };
                 delete newQuantities[productId];
-                
-                // If this was the last product, clear the cart
-                if (Object.keys(newQuantities).length === 0) {
-                    localStorage.removeItem('cartId');
-                    localStorage.removeItem('cartDetails');
-                }
-                
                 return newQuantities;
             });
 

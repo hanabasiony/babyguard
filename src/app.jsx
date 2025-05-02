@@ -39,7 +39,7 @@ import Cart from './components/Cart/Cart'
 import AdminPannel from './components/adminPanel/adminPannel'
 import ProtectedRouteAdmin from './context/ProtectdRouteAdmin'
 import Settings from './components/Settings/Settings'
-
+import Review from './components/Review/Review'
 
 
 const router = createBrowserRouter([
@@ -75,11 +75,20 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      
       {
         path: 'childProfile',
         element: (
           <ProtectedRoute>
             <ChildProfile />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'review',
+        element: (
+          <ProtectedRoute>
+            <Review/>
           </ProtectedRoute>
         ),
       },

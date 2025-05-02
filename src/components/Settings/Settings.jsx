@@ -26,7 +26,7 @@ export default function Settings() {
             // Delete cart from server if it exists
             if (cartId && token) {
                 try {
-                    await axios.delete(
+                    const response = await axios.delete(
                         `http://localhost:8000/api/carts/${cartId}`,
                         {
                             headers: {
@@ -34,8 +34,15 @@ export default function Settings() {
                             }
                         }
                     );
+                    
+                    if (response.status !== 200) {
+                        toast.error('Failed to delete cart. Please try again.');
+                        return; // Prevent logout if cart deletion fails
+                    }
                 } catch (error) {
                     console.error('Error deleting cart:', error);
+                    toast.error('Failed to delete cart. Please try again.');
+                    return; // Prevent logout if cart deletion fails
                 }
             }
 

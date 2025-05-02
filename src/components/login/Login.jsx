@@ -181,8 +181,9 @@ export default function Login() {
                 </div>
 
                 <div className='flex justify-center items-center ' >
-                    <button type="submit" className="text-white bg-pink-200 hover:bg-pink-200 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-400 dark:hover:bg-pink-500 dark:focus:ring-pink-500" disabled={loading}>{loading ? 'Loading..' : 'Login'}</button>
-                    <Link to='/PassSend' className='text-sm text-center w-full '> Forgot password ? </Link>
+                    <button type="submit" className="text-white bg-pink-200 cursor-pointer hover:bg-pink-200 focus:ring-4 focus:outline-none focus:ring-pink-200 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-pink-400 dark:hover:bg-pink-500 dark:focus:ring-pink-500" disabled={loading}>{loading ? 'Loading..' : 'Login'}</button>
+                    <Link to='/PassSend' className='text-sm text-center w-full  hover:text-blue-500'> Forgot password ? </Link>
+                    <Link to='/reg' className='text-sm text-center w-full  hover:text-blue-500'> Don't have an account ? </Link>
                 </div>
             </form>
         </div>
